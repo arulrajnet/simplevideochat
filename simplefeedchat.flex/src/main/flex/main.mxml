@@ -119,7 +119,7 @@
 			private function initListeners():void {
 				LOG.debug("### initListeners : Start");
 				GlobalDispatcher.addEventListener(ConnectionEvent.VIDEO_CONN_CONNECTING,showConnectingPopup);
-				GlobalDispatcher.addEventListener(ConnectionEvent.VIDEO_CONN_SUCCESS,initMediaConnection);
+//				GlobalDispatcher.addEventListener(ConnectionEvent.VIDEO_CONN_SUCCESS,initMediaConnection);
 				GlobalDispatcher.addEventListener(ConnectionEvent.VIDEO_CONN_FAILED,initFallbackConnection);
 				GlobalDispatcher.addEventListener(ConnectionEvent.VIDEO_CONN_FAILED,showErrorPopup);
 				GlobalDispatcher.addEventListener(StreamEvent.VIDEO_NOT_AVAILABLE,showErrorPopup);
@@ -147,6 +147,9 @@
 			private function initMediaConnection(event:Event):void {
 				LOG.debug(event.type);
 				removePopup();
+				if(connectBoxPopup != null && connectBoxPopup.parent) {
+					connectBoxPopup.close();
+				}
 				videoConn.publishAudioVideo();
 			}			
 			
@@ -189,7 +192,7 @@
 			public function showPopup(message:String, hideAfterClick:Boolean = false):void {
 				LOG.debug("### showPopup : "+message);
 				removePopup();
-				statusPopup = InfoPopup(PopUpManager.createPopUp(this, InfoPopup, true));
+				statusPopup = InfoPopup(PopUpManager.createPopUp(FlexGlobals.topLevelApplication as Application, InfoPopup, true));
 				statusPopup.width= 400;
 				statusPopup.height= 200;
 				statusPopup.title = "Status";
@@ -202,17 +205,17 @@
 			private function showConnectingPopup(event:Event):void {
 				LOG.debug("Show Connecting Popup...");
 //				removePopup();
-//				connectingPopup = InfoPopup(PopUpManager.createPopUp(this, InfoPopup, true));
+				connectingPopup = InfoPopup(PopUpManager.createPopUp(FlexGlobals.topLevelApplication as Application, InfoPopup, true));
 				LOG.debug("1");
-//				connectingPopup.title = "Status";
-//				connectingPopup.infoLabel.text = "Connecting "+videoConn.connectionType.name+"...";
+				connectingPopup.title = "Status";
+				connectingPopup.infoLabel.text = "Connecting "+videoConn.connectionType.name+"...";
 				LOG.debug("2");
-//				PopUpManager.centerPopUp(connectingPopup);
+				PopUpManager.centerPopUp(connectingPopup);
 				LOG.debug("3");
 			}			
 			
 			private function showErrorPopup(event:Event):void {
-				var errorPopup:InfoPopup = InfoPopup(PopUpManager.createPopUp(this, InfoPopup, true));
+				var errorPopup:InfoPopup = InfoPopup(PopUpManager.createPopUp(FlexGlobals.topLevelApplication as Application, InfoPopup, true));
 				errorPopup.title = "Error";
 				removePopup();
 				if (event.type == ConnectionEvent.VIDEO_CONN_FAILED) {
@@ -229,10 +232,10 @@
 			
 			public function showConnectBoxAsPopup(component:IUIComponent=null, hideAfterClick:Boolean = false):void {
 				LOG.debug("### showConnectBoxAsPopup : "+component);
-				removePopup();
-				connectBoxPopup = InfoPopup(PopUpManager.createPopUp(this, InfoPopup, true));
+//				removePopup();
+				connectBoxPopup = InfoPopup(PopUpManager.createPopUp(FlexGlobals.topLevelApplication as Application, InfoPopup, true));
 				connectBoxPopup.title = "Connect";
-//				connectBoxPopup.removeAllElements();
+				connectBoxPopup.removeAllElements();
 //				connectBoxPopup.removeElementAt(connectBoxPopup.getElementIndex(connectingPopup.infoLabel));
 				var connectBox:ConnectBox = new ConnectBox();
 				connectBoxPopup.width = 400;
@@ -245,16 +248,12 @@
 			public function removePopup():void {
 				LOG.debug("### removePopup");
 				if(statusPopup != null && statusPopup.parent) {
-					PopUpManager.removePopUp(statusPopup);
-				}
-				
-				if(connectBoxPopup != null && connectBoxPopup.parent) {
-					PopUpManager.removePopUp(connectBoxPopup);
-				}
+					statusPopup.close();
+				}				
 				
 				if(connectingPopup != null && connectingPopup.parent) {
-					PopUpManager.removePopUp(connectingPopup);
-				}				
+					connectingPopup.close();
+				}
 			}
 			
 			private function getURLDetails():void {

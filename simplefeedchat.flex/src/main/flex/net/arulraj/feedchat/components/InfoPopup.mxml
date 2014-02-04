@@ -24,17 +24,25 @@
 			[Bindable]
 			private var _exitEnabled:Boolean = false;
 			
-			private function close():void {
+			private function onPopupClick(event:MouseEvent=null):void {
 				PopUpManager.removePopUp(this);
 			}
 			
 			public function set exitEnabled(exitEnabled:Boolean):void {
 				this._exitEnabled = exitEnabled;
-				this.closeButton.visible = false;
+				if(this._exitEnabled) {
+					this.addEventListener(MouseEvent.CLICK, onPopupClick);
+				} else {
+					this.removeEventListener(MouseEvent.CLICK, onPopupClick);
+				}
 			}
 			
 			public function get exitEnabled():Boolean {
 				return this._exitEnabled;
+			}
+
+			public function close():void {
+				onPopupClick();
 			}			
 			
 		]]>
@@ -43,9 +51,8 @@
 		<s:VerticalLayout horizontalAlign="center" verticalAlign="middle" />
 	</s:layout>
 	<s:VGroup horizontalCenter="0" verticalCenter="0">
-		<s:Label id="infoLabel" name="infoLabel" width="{this.width}" textAlign="center" verticalAlign="middle" fontSize="14" text="Error in this application... Try again..." />
-		
-		<s:Button id="closeButton" label="Close" horizontalCenter="0" visible="false" includeInLayout="{this.closeButton.visible}" click="close()" />		
+		<s:Label id="infoLabel" width="{this.width}" textAlign="center" verticalAlign="middle" fontSize="14"
+				 text="Error in this application... Try again..." />
 	</s:VGroup>
 	
 </s:TitleWindow>
