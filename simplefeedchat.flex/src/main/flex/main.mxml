@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   preinitialize="initVars(event)"
+			   initialize="initFunctions(event)"
+			   creationComplete="creationComplete(event)"
+			   xmlns:view="net.arulraj.feedchat.view.*" xmlns:event="net.arulraj.feedchat.events.*" 
+			   xmlns:net="net.arulraj.feedchat.connection.*" xmlns:utils="net.arulraj.feedchat.utils.*" 
+			   xmlns:components="net.arulraj.feedchat.components.*" xmlns:skin="net.arulraj.feedchat.skin.*"
+			   width="100%" height="100%"
+			   minWidth="800" minHeight="600">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Style source="style.css" />
+	<fx:Script>
+		<![CDATA[
+			import mx.core.FlexGlobals;
+			import mx.core.IUIComponent;
+			import mx.events.FlexEvent;
+			import mx.logging.ILogger;
+			import mx.logging.Log;
+			import mx.managers.PopUpManager;
+			import mx.rpc.AsyncResponder;
+			import mx.utils.URLUtil;
+			
+			import net.arulraj.feedchat.components.ConnectBox;
+			import net.arulraj.feedchat.components.InfoPopup;
+			import net.arulraj.feedchat.connection.VideoConnection;
+			import net.arulraj.feedchat.events.AppEvent;
+			import net.arulraj.feedchat.events.ConnectionEvent;
+			import net.arulraj.feedchat.events.StreamEvent;
+			import net.arulraj.feedchat.models.ConnectionType;
+			import net.arulraj.feedchat.utils.AppConstants;
+			import net.arulraj.feedchat.utils.LogTrace;
+			
+			import turbosqel.data.resources.Resource;
+			import turbosqel.data.resources.ResourceManage;
+			import turbosqel.events.GlobalDispatcher;
+			import turbosqel.net.downloader.DownloadManager;
+			import turbosqel.net.downloader.DownloadManagerEvent;
+			
+			
+			private static var LOG:ILogger = Log.getLogger('main.mxml');
+			
+			private var logtrace:LogTrace;
+			
+			/**
+			 * Male Variables
+			 */
+			protected var loginResponder:AsyncResponder;
+			
+			/**
+			 * Female Variables 
+			 */
+			protected var femaleResponder:AsyncResponder;
+			
+			/**
+			 * Popup's
+			 */
+			protected var statusPopup:InfoPopup;
+			
+			protected var connectBoxPopup:InfoPopup;
+			
+			protected var connectingPopup:InfoPopup;
+			
+			protected var configResource:Resource;
+			
+			[Bindable]
+			public var userId:String;
+			
+			[Bindable]
+			public var partnerId:String;
+			
+			[Bindable]
+			public var videoConn:VideoConnection;			
+			
+			/**
+			 * Preinitialize function
+			 * 
+			 * First function called among everyone
+			 */
+			protected function initVars(event:FlexEvent):void
+			{
+				LOG.debug("### initVars : Start");
+				logtrace = new LogTrace();
+				videoConn = new VideoConnection();
+				LOG.debug("### initVars : End");
+			}
+			
+			/**
+			 * Initialize function
+			 * 
+			 * Second function called 
+			 */ 
+			protected function initFunctions(event:FlexEvent):void
+			{
+				LOG.debug("### initFunctions : Start");
+
+				LOG.debug("### initFunctions : End");
+			}
+			
+			/**
+			 * Final function called 
+			 */
+			protected function creationComplete(event:FlexEvent):void
+			{
+				LOG.debug("### creationComplete : Start");
+				initListeners();
+				getURLDetails();
+				initConfig();
+				LOG.debug("### creationComplete : End");
+			}
+			
+			/**
+			 * All Global listeners initialization
+			 */ 
+			private function initListeners():void {
+				LOG.debug("### initListeners : Start");
+				GlobalDispatcher.addEventListener(ConnectionEvent.VIDEO_CONN_CONNECTING,showConnectingPopup);
+				GlobalDispatcher.addEventListener(ConnectionEvent.VIDEO_CONN_SUCCESS,initMediaConnection);
+				GlobalDispatcher.addEventListener(ConnectionEvent.VIDEO_CONN_FAILED,initFallbackConnection);
+				GlobalDispatcher.addEventListener(ConnectionEvent.VIDEO_CONN_FAILED,showErrorPopup);
+				GlobalDispatcher.addEventListener(StreamEvent.VIDEO_NOT_AVAILABLE,showErrorPopup);
+				GlobalDispatcher.addEventListener(StreamEvent.AUDIO_NOT_AVAILABLE,showErrorPopup);
+				GlobalDispatcher.addEventListener(StreamEvent.MEDIA_NOT_ALLOWED,showErrorPopup);
+				
+				GlobalDispatcher.addEventListener(AppEvent.CONNECT_SCREEN, showStartUpScreen);
+				GlobalDispatcher.addEventListener(AppEvent.CONNECTING_PARTNER, initMediaConnection);
+				
+				LOG.debug("### initListeners : End");
+			}
+			
+			private function initFallbackConnection(event:Event):void {
+				LOG.debug("Error in establishing RTMP connection. So Trying RTMPT...");
+				removePopup();
+				if(videoConn.connectionType == ConnectionType.RTMP) {
+//					videoConn.connectionType = ConnectionType.RTMPT;
+//					videoConn.getConnection();
+				} else {
+					LOG.debug("In else Part");
+					showErrorPopup(event);
+				}
+			}			
+			
+			private function initMediaConnection(event:Event):void {
+				LOG.debug(event.type);
+				removePopup();
+				videoConn.publishAudioVideo();
+			}			
+			
+			/**
+			 * Get the config from xml file from server 
+			 */
+			private function initConfig():void {
+				LOG.debug("### initConfig : Start");
+				configResource  = ResourceManage.setExternal("globals.xml");
+				LOG.debug(""+ResourceManage.exist("globals.xml"));
+				DownloadManager.addEventListener(DownloadManagerEvent.COMPLETE, initUIDesign);				
+				LOG.debug("### initConfig : End");
+			}
+			
+			/**
+			 * First screen shown on user
+			 */ 
+			private function initUIDesign(event:DownloadManagerEvent):void {
+				LOG.debug("### initUIDesign : Start");
+				var globalsXml:XML = new XML(configResource.loaderInfo.source);
+				AppConstants.RED5_SERVER = globalsXml.static[0].elements("net.Links.RED5").@["value"];
+				AppConstants.PHP_SERVER = globalsXml.static[0].elements("net.Links.PHP").@["value"];
+				setTimeout(GlobalDispatcher.dispatchEvent,1000,new AppEvent(AppEvent.CONNECT_SCREEN));
+				LOG.debug("### initUIDesign : End");
+			}
+			
+			private function showStartUpScreen(event:AppEvent):void {
+				showConnectBoxAsPopup();
+				videoConn.connectionType = ConnectionType.RTMP;
+				videoConn.getConnection();
+			}
+			
+			/**
+			 * Show popup screens
+			 */ 
+			private function showPopupEvent(event:AppEvent):void {
+				showPopup(event.message , event.hideClick);
+			}
+			
+			public function showPopup(message:String, hideAfterClick:Boolean = false):void {
+				LOG.debug("### showPopup : "+message);
+				removePopup();
+				statusPopup = InfoPopup(PopUpManager.createPopUp(this, InfoPopup, true));
+				statusPopup.width= 400;
+				statusPopup.height= 200;
+				statusPopup.title = "Status";
+				statusPopup.infoLabel.text = message;
+				statusPopup.infoLabel.setStyle("fontSize",25);
+				statusPopup.exitEnabled=hideAfterClick;
+				PopUpManager.centerPopUp(statusPopup);				
+			}
+			
+			private function showConnectingPopup(event:Event):void {
+				LOG.debug("Show Connecting Popup...");
+//				removePopup();
+//				connectingPopup = InfoPopup(PopUpManager.createPopUp(this, InfoPopup, true));
+				LOG.debug("1");
+//				connectingPopup.title = "Status";
+//				connectingPopup.infoLabel.text = "Connecting "+videoConn.connectionType.name+"...";
+				LOG.debug("2");
+//				PopUpManager.centerPopUp(connectingPopup);
+				LOG.debug("3");
+			}			
+			
+			private function showErrorPopup(event:Event):void {
+				var errorPopup:InfoPopup = InfoPopup(PopUpManager.createPopUp(this, InfoPopup, true));
+				errorPopup.title = "Error";
+				removePopup();
+				if (event.type == ConnectionEvent.VIDEO_CONN_FAILED) {
+					errorPopup.infoLabel.text = "Error in establishing RTMP connection. Please try agian.";
+				} else if(event.type == StreamEvent.VIDEO_NOT_AVAILABLE) {
+					errorPopup.infoLabel.text = "Webcam is not detected. Please check your hardware.";
+				} else if(event.type == StreamEvent.AUDIO_NOT_AVAILABLE) {
+					errorPopup.infoLabel.text = "Microphone is not detected. Please check your hardware.";
+				} else if(event.type == StreamEvent.MEDIA_NOT_ALLOWED) {
+					errorPopup.infoLabel.text = "Webcam and Microphone media is not allowed by user.";
+				}
+				PopUpManager.centerPopUp(errorPopup);
+			}			
+			
+			public function showConnectBoxAsPopup(component:IUIComponent=null, hideAfterClick:Boolean = false):void {
+				LOG.debug("### showConnectBoxAsPopup : "+component);
+				removePopup();
+				connectBoxPopup = InfoPopup(PopUpManager.createPopUp(this, InfoPopup, true));
+				connectBoxPopup.title = "Connect";
+//				connectBoxPopup.removeAllElements();
+//				connectBoxPopup.removeElementAt(connectBoxPopup.getElementIndex(connectingPopup.infoLabel));
+				var connectBox:ConnectBox = new ConnectBox();
+				connectBoxPopup.width = 400;
+				connectBoxPopup.height= 150;
+				connectBoxPopup.addElement(connectBox);
+				connectBoxPopup.exitEnabled=hideAfterClick;
+				PopUpManager.centerPopUp(connectBoxPopup);				
+			}
+			
+			public function removePopup():void {
+				LOG.debug("### removePopup");
+				if(statusPopup != null && statusPopup.parent) {
+					PopUpManager.removePopUp(statusPopup);
+				}
+				
+				if(connectBoxPopup != null && connectBoxPopup.parent) {
+					PopUpManager.removePopUp(connectBoxPopup);
+				}
+				
+				if(connectingPopup != null && connectingPopup.parent) {
+					PopUpManager.removePopUp(connectingPopup);
+				}				
+			}
+			
+			private function getURLDetails():void {
+				var url:String = this.url;
+				var flashvars:Object = this.parameters;
+				var red5server:String = flashvars["red5Server"];
+				var red5secure:String = flashvars["red5Secure"];
+				var red5port:String = flashvars["red5Port"];
+				var red5Scope:String = flashvars["red5Scope"];
+				var fallbackPort:String = flashvars["fallbackPort"];
+				var userId:String = flashvars["userId"];
+				var partnerId:String = flashvars["partnerId"];
+				
+				var fullURL:String = URLUtil.getFullURL(url, url);
+				var port:int = URLUtil.getPort(url);
+				var protocol:String = URLUtil.getProtocol(url);
+				
+				LOG.debug("Hostname : "+red5server+" Port : "+red5port+
+					" Secure : "+red5secure+ " userId : "+ userId+ " partnerId : "+partnerId);				
+			}
+			
+		]]>
+	</fx:Script>
+	<s:layout>
+		<s:VerticalLayout horizontalAlign="center" verticalAlign="middle" />
+	</s:layout>
+	<components:VideoBox id="videoBox" width="600" height="480" />
+	<components:SettingsBox id="settingBox" width="600" />
+</s:Application>

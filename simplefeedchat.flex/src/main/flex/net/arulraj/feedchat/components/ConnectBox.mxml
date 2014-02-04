@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:utils="net.arulraj.feedchat.utils.*">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<fx:Array id="validators">
+			<mx:StringValidator source="{userName}" property="text" required="true" requiredFieldError="Name is Required" />
+		</fx:Array>
+		<utils:FormValidator id="formValidator" validators="{validators}" />
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import mx.logging.ILogger;
+			import mx.logging.Log;
+			
+			import net.arulraj.feedchat.events.AppEvent;
+			
+			import turbosqel.events.GlobalDispatcher;
+			
+			private static var LOG:ILogger = Log.getLogger('main.mxml');
+			
+			protected function onConnectClick(event:MouseEvent):void
+			{
+				this.formValidator.validateForm(event);
+				if(this.formValidator.formIsValid) {
+					GlobalDispatcher.dispatchEvent(new AppEvent( AppEvent.CONNECTING_PARTNER , {code:userName.text} ));
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:layout>
+		<s:VerticalLayout horizontalAlign="center" verticalAlign="middle"
+						  paddingLeft="5" paddingRight="5"
+						  paddingBottom="5" paddingTop="5"/>
+	</s:layout>
+	
+	<s:TextInput id="userName" 
+				 width="240" height="35" fontSize="25" textAlign="center"/>
+	
+	<s:Button id="connectPartner" label="Connect" width="150" height="30" click="onConnectClick(event)"/>	
+</s:Group>

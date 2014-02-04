@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+	File	: SettingsBox.mxml
+	Date	: Jan 22, 2014
+	Owner	: arul
+	Project	: nwrclient
+	Contact	: http://www.arulraj.net
+	Description :
+	History	:
+-->
+
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx">
+	<s:layout>
+		<s:VerticalLayout gap="15" paddingLeft="10" paddingRight="10" paddingTop="0" paddingBottom="10"/>
+	</s:layout>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import net.arulraj.feedchat.models.Settings;
+			import net.arulraj.feedchat.utils.AppConstants;
+			
+			import mx.core.FlexGlobals;
+			import mx.logging.ILogger;
+			import mx.logging.Log;
+			
+			private static var LOG:ILogger = Log.getLogger('net.arulraj.feedchat.components.SettingsBox');
+			
+			[Bindable]
+			private var application:Object = FlexGlobals.topLevelApplication;
+			
+			public function onMicActivity(value:Number):void {
+				LOG.debug("onMicActivity : "+value);
+			}
+			
+			protected function onClickBackButton(event:MouseEvent):void
+			{
+				FlexGlobals.topLevelApplication.videoBox.currentState = "normal";
+				FlexGlobals.topLevelApplication.commonTimer.removeEventListener(TimerEvent.TIMER, FlexGlobals.topLevelApplication.videoConn.updateMicMeter);
+			}			
+
+		]]>
+	</fx:Script>
+	
+	<s:Group>
+		<s:layout>
+			<s:HorizontalLayout gap="10" paddingLeft="5" paddingRight="5" paddingTop="15" 
+								paddingBottom="5" verticalAlign="middle" horizontalAlign="left" />
+		</s:layout>
+		<mx:Image source="@Embed('/assets/video.jpg')" />
+		<s:Label text="VIDEO" />
+	</s:Group>
+	
+	<s:Group>
+		<s:layout>
+			<s:HorizontalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" />
+		</s:layout>
+		<s:Group>
+			<s:layout>
+				<s:VerticalLayout />
+			</s:layout>
+			<s:Group>
+				<s:layout>
+					<s:HorizontalLayout verticalAlign="middle" />
+				</s:layout>
+				<s:Label text="Devices" />
+				<s:DropDownList id="cameraNames"  dataProvider="@{application.avSettings.cameraArray}" selectedIndex="@{application.avSettings.camSeletedItem}">
+					
+				</s:DropDownList>
+			</s:Group>
+			<s:Group>
+				<s:layout>
+					<s:HorizontalLayout verticalAlign="middle" />
+				</s:layout>
+				<s:Label text="Quality" />
+				<s:ButtonBar id="camQualityBar" requireSelection="true" selectedIndex="@{application.avSettings.camQuality}">
+					<s:ArrayCollection source="{AppConstants.QUALITY_ARRAY}" />
+				</s:ButtonBar>
+			</s:Group>
+		</s:Group>
+		<s:Group>
+			<s:layout>
+				<s:VerticalLayout />
+			</s:layout>
+			<s:Group>
+				<s:layout>
+					<s:HorizontalLayout verticalAlign="middle" />
+				</s:layout>
+				<s:Label text="Aspect Ratio" />
+				<s:DropDownList id="aspectRatio" dataProvider="@{application.avSettings.aspectArray}" selectedIndex="@{application.avSettings.aspectSelectedItem}">
+					
+				</s:DropDownList>
+			</s:Group>
+			<s:Group>
+				<s:layout>
+					<s:HorizontalLayout verticalAlign="middle" />
+				</s:layout>
+				<s:Label text="Frame Rate" />
+				<s:HSlider id="frameRate" maximum="30" value="@{application.avSettings.frameRate}" />
+				<s:Label text="{frameRate.value}" />
+			</s:Group>
+		</s:Group>
+	</s:Group>
+	
+	<s:Group>
+		<s:layout>
+			<s:HorizontalLayout gap="10" paddingLeft="5" paddingRight="5" paddingTop="5" 
+								paddingBottom="5" verticalAlign="middle" horizontalAlign="left" />
+		</s:layout>
+		<mx:Image source="@Embed('/assets/audio.jpg')" />
+		<s:Label text="AUDIO" />
+	</s:Group>
+	
+	<s:Group>
+		<s:layout>
+			<s:HorizontalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" />
+		</s:layout>
+		<s:Group>
+			<s:layout>
+				<s:VerticalLayout />
+			</s:layout>
+			<s:Group>
+				<s:layout>
+					<s:HorizontalLayout verticalAlign="middle" />
+				</s:layout>
+				<s:Label text="Devices" />			
+				<s:DropDownList id="microphoneNames" dataProvider="{application.avSettings.micArray}" 
+								selectedIndex="@{application.avSettings.micSelectedItem}">
+					
+				</s:DropDownList>
+			</s:Group>
+			<s:Group>
+				<s:layout>
+					<s:HorizontalLayout verticalAlign="middle" />
+				</s:layout>
+				<s:Label text="Quality" />
+				<s:ButtonBar id="micQualityBar" requireSelection="true" 
+							 selectedIndex="@{application.avSettings.micQuality}">
+					<s:ArrayCollection source="{AppConstants.QUALITY_ARRAY}" />
+				</s:ButtonBar>
+			</s:Group>
+		</s:Group>
+		<s:Group>
+			<s:layout>
+				<s:VerticalLayout />
+			</s:layout>
+			<s:Group>
+				<s:layout>
+					<s:HorizontalLayout verticalAlign="middle" />
+				</s:layout>
+				<s:Label text="Input Volume" />
+				<s:HSlider id="micVolumeSlider" maximum="100" value="@{application.avSettings.micVolume}" />
+				<s:Label text="{micVolumeSlider.value}" />
+			</s:Group>
+			<s:Group>
+				<s:layout>
+					<s:HorizontalLayout verticalAlign="middle" />
+				</s:layout>
+				<s:Label text="Volume Meter" />
+				<mx:ProgressBar label="volume" labelPlacement="center" minimum="0" maximum="100" id="micProgress" mode="manual" visible="true" bottom="0" right="0" left="0"/>
+			</s:Group>			
+		</s:Group>
+	</s:Group>
+	
+	<s:Button label="Back" click="onClickBackButton(event)" />	
+	
+</s:Group>

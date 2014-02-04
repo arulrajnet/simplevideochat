@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 xmlns:components="net.arulraj.feedchat.components.*"
+		 creationComplete="onCreationComplete(event)">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import net.arulraj.feedchat.events.ChatEvent;
+			import net.arulraj.feedchat.models.ChatMessage;
+			import net.arulraj.feedchat.utils.AppUtility;
+			
+			import flashx.textLayout.conversion.TextConverter;
+			
+			import mx.core.FlexGlobals;
+			import mx.events.FlexEvent;
+			import mx.logging.ILogger;
+			import mx.logging.Log;
+			import mx.utils.StringUtil;
+			
+			private static var LOG:ILogger = Log.getLogger('net.arulraj.feedchat.components.ChatBox');
+			
+			/*This is for add Help message to the users*/
+			private function showHelpMessage():void {
+				var help:String = AppUtility.getCurrentTime()+"You are entering into nwr chating.\n"; 
+				help = help + AppUtility.getCurrentTime() + "Have a happy ride!\n";
+				help = help + AppUtility.getCurrentTime() + "Hit \"<b>Next</b>\" button to find a random partner.\n";
+				help = "<font color=\"#0000FF\">" + help + "</font>";
+				chatHistoryArea.htmlText += help;
+//				chatHistoryArea.textFlow = TextConverter.importToFlow(help, TextConverter.TEXT_FIELD_HTML_FORMAT);
+			}
+			
+			private function addInfoMessage(msg:String):void {
+				msg = AppUtility.getCurrentTime() + msg + "\n";
+				msg = "<font color=\"#0000FF\">" + msg + "</font>";
+				chatHistoryArea.htmlText += msg;
+//				chatHistoryArea.textFlow = TextConverter.importToFlow(msg, TextConverter.TEXT_FIELD_HTML_FORMAT);
+			}		
+			
+			/*This method is send a message to all connected users*/
+			private function sendPublicMessage(event:Event):void {
+				var message:String = "";
+				var cMessage:ChatMessage = new ChatMessage();
+				if( !(StringUtil.trim(chatInput.text) == "") ){
+					message = StringUtil.trim(chatInput.text);
+					cMessage.from = FlexGlobals.topLevelApplication.userId;
+					cMessage.userId = FlexGlobals.topLevelApplication.userId;
+					cMessage.message = message;
+					FlexGlobals.topLevelApplication.videoConn.chatSO.send("receiveGroupMessage", cMessage.userId, cMessage.message);
+					LOG.debug("Chat send public message: "+cMessage.message);
+					receiveMessage("Me",cMessage.message)
+				}
+				stage.focus = null;
+				chatInput.text = null;
+			}
+			
+			private function sendMessage(event:Event):void {
+				var message:String = "";
+				var sendMessageResult:Responder = new Responder(this.onMessageSuccess, this.onMesageFail);
+				if( !(StringUtil.trim(chatInput.text) == "") && FlexGlobals.topLevelApplication.partnerId != null ){
+					message = StringUtil.trim(chatInput.text); 
+					FlexGlobals.topLevelApplication.videoConn.call("sendMessageToPartner",sendMessageResult,
+						FlexGlobals.topLevelApplication.userId,FlexGlobals.topLevelApplication.partnerId, message);
+					LOG.debug("Chat send message: "+message);
+				}
+				stage.focus = null;
+				chatInput.text = null;
+			}
+			
+			private function onMessageSuccess(object:Object):void {
+				LOG.debug("Successfully chat message send");
+			}
+			
+			private function onMesageFail(object:Object):void {
+				LOG.debug("Chat message failed");
+			}       
+			
+			public function receiveMessage(user:String, message:String):void {
+				LOG.debug("Receive this \""+message+"\" message from "+user);
+				var hourString:String = AppUtility.getCurrentTime();
+				if(user == FlexGlobals.topLevelApplication.userId){
+					message = "<font color=\"#800080\">"+hourString+""+message+"</font>";
+				} else {
+					message = hourString+" "+message;
+				}
+				chatHistoryArea.htmlText += message;
+//				chatHistoryArea.textFlow = TextConverter.importToFlow(message, TextConverter.TEXT_FIELD_HTML_FORMAT);
+//				chatHistoryArea.scroller.verticalScrollBar.value = chatHistoryArea.scroller.verticalScrollBar.maximum;
+				chatHistoryArea.verticalScrollPosition = chatHistoryArea.maxVerticalScrollPosition;
+				chatHistoryArea.validateNow();
+				chatInput.setFocus();
+			}			
+			
+			protected function onCreationComplete(event:FlexEvent):void
+			{
+				showHelpMessage();
+			}
+			
+			protected function findNextPartner(event:MouseEvent):void
+			{
+				var getPartnerResult:Responder = new Responder(this.onNextPartnerSuccess, this.onNextPartnerFail);
+				var userId:String = FlexGlobals.topLevelApplication.userId;
+				var meetingId:String = FlexGlobals.topLevelApplication.meetingId;
+				FlexGlobals.topLevelApplication.videoConn.call("getNextPartner", getPartnerResult, userId, meetingId );
+			}
+
+			private function onNextPartnerSuccess(object:Object):void {
+				var partnerName:String =  object as String;
+				FlexGlobals.topLevelApplication.partnerId = partnerName;
+				if(partnerName != null) {
+					this.dispatchEvent(new ChatEvent(ChatEvent.PARTNER_NEW_ARRIVED));
+				} else {
+					this.dispatchEvent(new ChatEvent(ChatEvent.PARTNER_NOT_AVAILABLE));
+				}
+			}
+
+			private function onNextPartnerFail(object:Object):void {
+
+			}
+
+		]]>
+	</fx:Script>
+	<mx:VDividedBox id="divideBox" width="100%" height="100%">
+		<mx:TextArea id="chatHistoryArea" name="chatHistory" width="{divideBox.width}" height="85%" />
+		<s:HGroup id="chatInputGroup" width="100%" height="15%">
+			<components:ChatInput id="chatInput" width="80%" height="{chatInputGroup.height}"
+								  enter="sendPublicMessage(event)"/>
+			<s:Button id="sendButton" label="Send" width="15%" height="{chatInputGroup.height}"
+					  click="sendPublicMessage(event)"/>
+			<s:Button id="nextButton" label="Next" width="15%" height="{chatInputGroup.height}"
+					  click="findNextPartner(event)"/>
+		</s:HGroup>
+	</mx:VDividedBox>
+</s:Group>

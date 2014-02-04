@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+	File	: VideoBox.mxml
+	Date	: Jan 22, 2014
+	Owner	: arul
+	Project	: nwrclient
+	Contact	: http://www.arulraj.net
+	Description :
+	History	:
+-->
+
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:components="net.arulraj.feedchat.components.*"
+		  creationComplete="onCreationComplete()" >
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<s:Parallel id="showEffect">
+			<s:Fade id="fadeIn" alphaFrom="0.0" alphaTo="1.0" />
+		</s:Parallel>
+		<s:Parallel id="hideEffect">
+			<s:Fade id="fadeOut" alphaFrom="1.0" alphaTo="0.0" />		
+		</s:Parallel>				
+	</fx:Declarations>
+	
+	<s:layout>
+		<s:HorizontalLayout gap="5" horizontalAlign="center" />
+	</s:layout>
+	
+	<s:states >
+		<s:State name="normal" />
+		<s:State name="chating" />
+		<s:State name="nopartner" />
+	</s:states>	
+	
+	<fx:Script>
+		<![CDATA[
+			import net.arulraj.feedchat.utils.AppConstants;
+			
+			import mx.core.FlexGlobals;
+			import mx.events.FlexEvent;
+			import mx.logging.ILogger;
+			import mx.logging.Log;
+			import mx.utils.StringUtil;
+			
+			import spark.components.Application;
+			
+			[Bindable]
+			private var application:Object = FlexGlobals.topLevelApplication;
+			
+			[Bindable]
+			private var sec:int = 0;
+			
+			[Bindable]
+			private var min:int = 0;
+			
+			[Bindable]
+			private var mls:int = 0;
+			
+			private var timerAtStart:int = 0;
+			
+			private var d:Date;			
+			
+			private static var LOG:ILogger = Log.getLogger('net.arulraj.feedchat.components.VideoBox');
+			
+			private function onCreationComplete():void {
+			}
+			
+			private function showControlBox(event:MouseEvent):void {
+//				liveVideoController.visible = true;
+			}
+			
+			private function hideControlBox(event:MouseEvent):void {
+//				liveVideoController.visible = false;
+			}
+
+			private function onStartClick(event:FlexEvent):void {
+				timerAtStart = getTimer();
+				FlexGlobals.topLevelApplication.commonTimer.addEventListener(TimerEvent.TIMER, updateRecordTimer);
+				FlexGlobals.topLevelApplication.videoConn.publishAudioVideo();				
+			}		
+			
+			private function onSettignsClick(event:FlexEvent):void {
+				this.currentState = "setting";
+				FlexGlobals.topLevelApplication.commonTimer.addEventListener(TimerEvent.TIMER, FlexGlobals.topLevelApplication.videoConn.updateMicMeter);
+			}
+
+			private function onStopClick(event:FlexEvent=null):void {
+			}
+
+			private function backToNormal(event:FlexEvent=null):void {
+				
+			}						
+			
+			private function onVolumeChange(value:uint):void {
+				var volume:Number = 0;
+				if(value > 0){
+					volume = value / 100;
+				}
+				FlexGlobals.topLevelApplication.videoConn.microphone.gain = volume;
+				LOG.debug("The Microphone volume is "+volume);				
+			}
+			
+			private function selectVideoWidth():Number {
+				return AppConstants.MEDIUM_VIDEO_WIDTH;
+			}
+			
+			private function selectVideoHeight():Number {
+				return AppConstants.MEDIUM_VIDEO_HEIGHT;
+			}
+			
+			private function updateRecordTimer( evt:TimerEvent=null ):void{
+				d = new Date( getTimer() - timerAtStart );
+				min = d.minutesUTC;
+				sec = d.secondsUTC;
+				mls = d.millisecondsUTC;
+				var durationInMilliSec:int = getTimer() - timerAtStart;
+				var durationInSec:int = Math.floor(durationInMilliSec / 1000);
+				var timeLeftInSec:int = FlexGlobals.topLevelApplication.avSettings.recordTime - durationInSec;
+				var timeLeftInMilliSec:int = (FlexGlobals.topLevelApplication.avSettings.recordTime * 1000) - durationInMilliSec;
+				if(timeLeftInSec == 0) {
+					onStopClick();
+				}
+			}
+			
+			private function zeroPad(number:int, width:int):String {
+				var ret:String = ""+number;
+				while( ret.length < width )
+					ret="0" + ret;
+				return ret;
+			}
+
+			private function numberToTimeString(number:int):String {
+				var min:int = Math.floor(number / 60);
+				var sec:int = number % 60;
+				return zeroPad(min,2)+":"+zeroPad(sec,2);
+			}
+
+			public function resetRecordTimer():void {
+				timerAtStart = getTimer();
+				updateRecordTimer();
+			}
+			
+			public function clearVideoDisplay():void {
+				var videoObject:Video = partnerVideoDisplay.videoObject;
+				if(videoObject != null) {
+					videoObject.clear();	
+				}
+			}
+
+			protected function showMediaSettings(event:MouseEvent):void
+			{
+				Security.showSettings(SecurityPanel.CAMERA);
+			}
+
+			protected function backToRecord(event:FlexEvent):void
+			{
+				FlexGlobals.topLevelApplication.videoConn.backToRecord();
+				backToNormal();
+			}
+
+		]]>
+	</fx:Script>
+	<s:Group id="noPartnerBox" width="{this.width}" height="{this.height}" includeIn="nopartner">
+		<s:Label verticalAlign="middle" text="Partner not avilable." />
+	</s:Group>
+	<s:Group id="partnerVideoBox" width="{this.width}" height="{this.height}" includeIn="chating">
+		<s:SkinnableContainer id="partnerVideoSkin" visible="true"
+							  height="{partnerVideoBox.height}" width="{partnerVideoBox.width}"
+							  skinClass="net.arulraj.feedchat.skin.VideoDisplaySkin">
+		</s:SkinnableContainer>		
+		<s:VideoDisplay id="partnerVideoDisplay" name="partnerVideoDisplay"
+						width="{partnerVideoBox.width}" height="{partnerVideoBox.height}" />
+		<s:Group id="partnerButtonBar" name="partnerButtonBar"
+				 x="{partnerVideoDisplay.x}" y="{partnerVideoDisplay.y}"
+				 width="{partnerVideoDisplay.width}" height="{partnerVideoDisplay.height}">
+			<s:layout>
+				<s:HorizontalLayout verticalAlign="middle" horizontalAlign="center" gap="0" />
+			</s:layout>			
+		</s:Group>
+	</s:Group>
+	<!--
+	<s:Group id="liveVideoBox" width="360" height="240" >
+		<s:VideoDisplay id="liveVideoDisplay" name="liveVideoDisplay"
+						width="{liveVideoBox.width}" height="{liveVideoBox.height}" />
+
+		<s:Group x="0" y="0"
+				 width="{liveVideoBox.width}" height="{liveVideoBox.height}">
+			<s:layout>
+				<s:VerticalLayout />
+			</s:layout>
+			<s:Group id="recordInfo" width="100%" >
+				<s:layout>
+					<s:HorizontalLayout paddingLeft="5" paddingRight="5" paddingTop="5" />
+				</s:layout>
+				<s:Button icon="@Embed('/assets/webcamON.png')" x="0" y="0" width="35" height="18" click="showMediaSettings(event)" 
+						  id="webcamSettings" toolTip="webcam settings" />
+			</s:Group>
+			<s:Group id="liveButtonBar" width="100%" height="100%">
+				<s:layout>
+					<s:HorizontalLayout verticalAlign="middle" horizontalAlign="center" gap="0" />
+				</s:layout>
+				<s:Button id="sendButton" includeIn="normal" label="Send Video" visible="false"
+						  includeInLayout="{sendButton.visible}"
+						  icon="@Embed(source='/assets/rec32.png')" toolTip="Click here to START sending Video"
+						  buttonDown="onStartClick(event)" enabled="{application.avSettings.cameraDetected}" />
+				
+				<s:Button id="stopButton" includeIn="chating" label="Stop Video" visible="false"
+						  includeInLayout="{stopButton.visible}"
+						  icon="@Embed(source='/assets/rec32.png')" toolTip="Click here to STOP sending Video"
+						  enabled="true" buttonDown="onStopClick(event)" />
+			</s:Group>
+			<mx:ProgressBar id="micProgress" name="micProgress"
+							styleName="micLevelProgressBar"
+							minimum="0" maximum="100" width="100%"
+							label="volume" labelPlacement="center"
+							mode="manual" visible="true"/>
+			
+			<components:SettingsBox id="settingsBox" name="settingsBox" includeIn="setting" />
+		</s:Group>		
+	</s:Group>	
+	-->
+</s:Group>

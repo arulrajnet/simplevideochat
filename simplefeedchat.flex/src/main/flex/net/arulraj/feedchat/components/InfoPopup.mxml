@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+	File	: InfoPopup.mxml
+	Date	: Jan 21, 2014
+	Owner	: arul
+	Project	: nwrclient
+	Contact	: http://www.arulraj.net
+	Description :
+	History	:
+-->
+
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   title="Message" name="infoPopup" skinClass="net.arulraj.feedchat.skin.PopupSkin"
+			   minWidth="300" minHeight="{_exitEnabled ? 100 : 100}" cornerRadius="7" dropShadowVisible="false"
+			   close="{_exitEnabled ? close() : null}"> 
+	<fx:Script>
+		<![CDATA[
+			import mx.events.CloseEvent;
+			import mx.managers.PopUpManager;
+			
+			[Bindable]
+			private var _exitEnabled:Boolean = false;
+			
+			private function close():void {
+				PopUpManager.removePopUp(this);
+			}
+			
+			public function set exitEnabled(exitEnabled:Boolean):void {
+				this._exitEnabled = exitEnabled;
+				this.closeButton.visible = false;
+			}
+			
+			public function get exitEnabled():Boolean {
+				return this._exitEnabled;
+			}			
+			
+		]]>
+	</fx:Script>
+	<s:layout>
+		<s:VerticalLayout horizontalAlign="center" verticalAlign="middle" />
+	</s:layout>
+	<s:VGroup horizontalCenter="0" verticalCenter="0">
+		<s:Label id="infoLabel" name="infoLabel" width="{this.width}" textAlign="center" verticalAlign="middle" fontSize="14" text="Error in this application... Try again..." />
+		
+		<s:Button id="closeButton" label="Close" horizontalCenter="0" visible="false" includeInLayout="{this.closeButton.visible}" click="close()" />		
+	</s:VGroup>
+	
+</s:TitleWindow>
