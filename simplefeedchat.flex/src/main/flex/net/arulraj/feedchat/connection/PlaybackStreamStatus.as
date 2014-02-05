@@ -1,11 +1,12 @@
 package net.arulraj.feedchat.connection
 {
-	import net.arulraj.feedchat.events.StreamEvent;
-	
 	import flash.events.NetStatusEvent;
 	
+	import mx.core.FlexGlobals;
 	import mx.logging.ILogger;
 	import mx.logging.Log;
+	
+	import net.arulraj.feedchat.events.StreamEvent;
 
 	public class PlaybackStreamStatus
 	{
@@ -24,9 +25,9 @@ package net.arulraj.feedchat.connection
 			if (event.info.code == "NetStream.Play.UnpublishNotify") {
 				
 			} else if(event.info.code == "NetStream.Play.Start") {
-				
+				FlexGlobals.topLevelApplication.videoBox.currentState = "chating";
 			} else if(event.info.code == "NetStream.Play.Stop") {
-				
+				FlexGlobals.topLevelApplication.videoBox.currentState = "nopartner";
 			} else if(event.info.code == "NetStream.Publish.Start") {
 				
 			} else if(event.info.code == "NetStream.Unpublish.Success") {
@@ -34,7 +35,7 @@ package net.arulraj.feedchat.connection
 			} else if(event.info.code == "NetStream.Publish.BadName") {
 				
 			} else if(event.info.code == "NetStream.Play.UnpublishNotify") {
-				
+				FlexGlobals.topLevelApplication.videoBox.currentState = "nopartner";
 			} else if(event.info.code == "NetStream.Record.Stop") {
 				
 			} else if(event.info.code == "NetStream.Record.Start") {

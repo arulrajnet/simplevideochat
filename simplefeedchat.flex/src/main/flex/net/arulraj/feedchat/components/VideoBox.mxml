@@ -37,15 +37,18 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import net.arulraj.feedchat.utils.AppConstants;
-			
 			import mx.core.FlexGlobals;
 			import mx.events.FlexEvent;
 			import mx.logging.ILogger;
 			import mx.logging.Log;
 			import mx.utils.StringUtil;
 			
+			import net.arulraj.feedchat.events.AppEvent;
+			import net.arulraj.feedchat.utils.AppConstants;
+			
 			import spark.components.Application;
+			
+			import turbosqel.events.GlobalDispatcher;
 			
 			[Bindable]
 			private var application:Object = FlexGlobals.topLevelApplication;
@@ -161,7 +164,6 @@
 				FlexGlobals.topLevelApplication.videoConn.backToRecord();
 				backToNormal();
 			}
-
 		]]>
 	</fx:Script>
 	<s:Group id="noPartnerBox" width="{this.width}" height="{this.height}" includeIn="nopartner">
@@ -213,14 +215,6 @@
 				</s:Group>			
 			</s:Group>		
 		</s:Group>
-		<s:HGroup gap="5" verticalAlign="middle">
-			<s:Button icon="@Embed('/assets/unmute.png')" width="40" height="40" id="unmuteButton" toolTip="Mute Audio" />
-			<s:Button icon="@Embed('/assets/mute.png')" width="40" height="40" id="muteButton" toolTip="Un mute Audio" />
-			<mx:ProgressBar id="micProgress" name="micProgress"
-							styleName="micLevelProgressBar"
-							minimum="0" maximum="100" width="80%"
-							label="volume" labelPlacement="center"
-							mode="manual" visible="true"/>
-		</s:HGroup>
+		<components:VideoButtonBox id="videoButtonBox" width="{liveVideoBox.width}" />
 	</s:VGroup>
 </s:Group>

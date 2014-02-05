@@ -77,7 +77,9 @@
 			public var partnerId:String;
 			
 			[Bindable]
-			public var videoConn:VideoConnection;			
+			public var videoConn:VideoConnection;
+			
+			public var commonTimer:Timer;
 			
 			/**
 			 * Preinitialize function
@@ -87,6 +89,7 @@
 			protected function initVars(event:FlexEvent):void
 			{
 				LOG.debug("### initVars : Start");
+				commonTimer = new Timer(50);
 				logtrace = new LogTrace();
 				videoConn = new VideoConnection();
 				LOG.debug("### initVars : End");
@@ -110,6 +113,7 @@
 			protected function creationComplete(event:FlexEvent):void
 			{
 				LOG.debug("### creationComplete : Start");
+				commonTimer.start();
 				initListeners();
 				getURLDetails();
 				initConfig();
@@ -131,6 +135,10 @@
 				
 				GlobalDispatcher.addEventListener(AppEvent.CONNECT_SCREEN, showStartUpScreen);
 				GlobalDispatcher.addEventListener(AppEvent.CONNECTING_PARTNER, initMediaConnection);
+				GlobalDispatcher.addEventListener(AppEvent.MICROPHONE_UNMUTED, videoConn.toggleMute);
+				GlobalDispatcher.addEventListener(AppEvent.MICROPHONE_MUTED, videoConn.toggleMute);
+				
+				commonTimer.addEventListener(TimerEvent.TIMER, videoConn.updateMicMeter);
 				
 				LOG.debug("### initListeners : End");
 			}
@@ -158,8 +166,10 @@
 				if(videoConn.connected) {
 					videoConn.previewAudioVideo();
 					videoConn.publishAudioVideo();
+					videoConn.playParnerMedia();
 				} else {
-					showPopup("Could not connect to server. Try again.",true);
+					showPopup("Could not connect to server. Try again.",false);
+//					GlobalDispatcher.dispatchEvent(new AppEvent(AppEvent.CONNECTING_PARTNER));					
 				}
 			}			
 			
@@ -208,7 +218,7 @@
 				statusPopup.height= 100;
 				statusPopup.title = "Status";
 				statusPopup.infoLabel.text = message;
-				statusPopup.infoLabel.setStyle("fontSize",25);
+				statusPopup.infoLabel.setStyle("fontSize",18);
 				statusPopup.exitEnabled=hideAfterClick;
 				PopUpManager.centerPopUp(statusPopup);				
 			}

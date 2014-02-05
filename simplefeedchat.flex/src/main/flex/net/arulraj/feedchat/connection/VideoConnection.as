@@ -37,6 +37,7 @@ package net.arulraj.feedchat.connection
 	
 	import net.arulraj.feedchat.components.InfoPopup;
 	import net.arulraj.feedchat.components.SettingsBox;
+	import net.arulraj.feedchat.events.AppEvent;
 	import net.arulraj.feedchat.events.ConnectionEvent;
 	import net.arulraj.feedchat.events.StreamEvent;
 	import net.arulraj.feedchat.utils.AppConstants;
@@ -199,20 +200,13 @@ package net.arulraj.feedchat.connection
 			if(microphone != null) {
 				var ac:int=microphone.activityLevel;
 				if(FlexGlobals.topLevelApplication.videoBox != null) {
-					/**
-					 * Check whether settings box is enabled or not
-					 */
-					var settingsBox:SettingsBox = FlexGlobals.topLevelApplication.videoBox.settingsBox;
-					if(settingsBox != null) {
-						FlexGlobals.topLevelApplication.videoBox.settingsBox.micProgress.setProgress(ac,100);						
-					}
 
 					/**
 					 * volume bar at the bottom of video
 					 */
-					var micProgress:DisplayObject = FlexGlobals.topLevelApplication.videoBox.micProgress;
+					var micProgress:DisplayObject = FlexGlobals.topLevelApplication.videoBox.videoButtonBox.micProgress;
 					if(micProgress != null) {
-						FlexGlobals.topLevelApplication.videoBox.micProgress.setProgress(ac,100);
+						FlexGlobals.topLevelApplication.videoBox.videoButtonBox.micProgress.setProgress(ac,100);
 					}
 				}
 			}
@@ -569,6 +563,25 @@ package net.arulraj.feedchat.connection
 				audioStream.attachCamera(null);
 				audioStream.close();
 				audioStream = null;
+			}
+		}
+		
+		/**
+		 * Function for mute and unmute the audio 
+		 */
+		public function toggleMute(event:AppEvent):void {
+			if(event.type == AppEvent.MICROPHONE_UNMUTED) {
+				if(AppConstants.IS_SINGLE_SREAM) {
+					videoStream.attachAudio(microphone);
+				} else {
+					audioStream.attachAudio(microphone);
+				}
+			} else {
+				if(AppConstants.IS_SINGLE_SREAM) {
+					videoStream.attachAudio(null);
+				} else {
+					audioStream.attachAudio(null);
+				}				
 			}
 		}
 

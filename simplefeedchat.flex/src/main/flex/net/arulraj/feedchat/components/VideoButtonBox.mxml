@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 creationComplete="onCreationComplete(event)">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			import net.arulraj.feedchat.events.AppEvent;
+			
+			import turbosqel.events.GlobalDispatcher;
+			
+			protected function onToggleMuteClick(event:MouseEvent,unmute:Boolean):void
+			{
+				if(unmute) {
+					GlobalDispatcher.dispatchEvent(new AppEvent(AppEvent.MICROPHONE_UNMUTED));
+					this.currentState = "unmuted";
+				} else {
+					GlobalDispatcher.dispatchEvent(new AppEvent(AppEvent.MICROPHONE_MUTED));
+					this.currentState = "muted";
+				}
+			}			
+			
+			protected function onCreationComplete(event:FlexEvent):void
+			{
+				this.currentState = "unmuted";				
+			}
+			
+		]]>
+	</fx:Script>
+	<s:layout>
+		<s:HorizontalLayout gap="5" verticalAlign="middle" />
+	</s:layout>
+	
+	<s:states>
+		<s:State name="muted" />
+		<s:State name="unmuted" />
+	</s:states>
+	
+	<s:Button icon="@Embed('/assets/unmute.png')" width="40" height="40" excludeFrom="muted"
+			  id="unmuteButton" toolTip="Mute Audio" click="onToggleMuteClick(event,false)" />
+	<s:Button icon="@Embed('/assets/mute.png')" width="40" height="40" includeIn="muted"
+			  id="muteButton" toolTip="Un mute Audio" click="onToggleMuteClick(event,true)" />
+	<mx:ProgressBar id="micProgress" name="micProgress"
+					styleName="micLevelProgressBar"
+					minimum="0" maximum="100" width="80%"
+					label="volume" labelPlacement="center"
+					mode="manual" visible="true"/>
+</s:Group>
