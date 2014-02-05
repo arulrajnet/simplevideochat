@@ -118,7 +118,7 @@
 			 */ 
 			private function initListeners():void {
 				LOG.debug("### initListeners : Start");
-				GlobalDispatcher.addEventListener(ConnectionEvent.VIDEO_CONN_CONNECTING,showConnectingPopup);
+//				GlobalDispatcher.addEventListener(ConnectionEvent.VIDEO_CONN_CONNECTING,showConnectingPopup);
 //				GlobalDispatcher.addEventListener(ConnectionEvent.VIDEO_CONN_SUCCESS,initMediaConnection);
 				GlobalDispatcher.addEventListener(ConnectionEvent.VIDEO_CONN_FAILED,initFallbackConnection);
 				GlobalDispatcher.addEventListener(ConnectionEvent.VIDEO_CONN_FAILED,showErrorPopup);
@@ -144,13 +144,20 @@
 				}
 			}			
 			
-			private function initMediaConnection(event:Event):void {
+			private function initMediaConnection(event:AppEvent):void {
 				LOG.debug(event.type);
+				LOG.debug(event.code);
+				userId = event.code;
 				removePopup();
 				if(connectBoxPopup != null && connectBoxPopup.parent) {
 					connectBoxPopup.close();
 				}
-				videoConn.publishAudioVideo();
+				if(videoConn.connected) {
+					videoConn.previewAudioVideo();
+					videoConn.publishAudioVideo();
+				} else {
+					showPopup("Could not connect to server. Try again.",true);
+				}
 			}			
 			
 			/**
@@ -170,8 +177,8 @@
 			private function initUIDesign(event:DownloadManagerEvent):void {
 				LOG.debug("### initUIDesign : Start");
 				var globalsXml:XML = new XML(configResource.loaderInfo.source);
-				AppConstants.RED5_SERVER = globalsXml.static[0].elements("net.Links.RED5").@["value"];
-				AppConstants.PHP_SERVER = globalsXml.static[0].elements("net.Links.PHP").@["value"];
+				AppConstants.RED5_SERVER = globalsXml.static[0].elements("net.arulraj.feedchat.utils.AppConstants.RED5_SERVER").@["value"];
+				AppConstants.PHP_SERVER = globalsXml.static[0].elements("net.arulraj.feedchat.utils.AppConstants.PHP_SERVER").@["value"];
 				setTimeout(GlobalDispatcher.dispatchEvent,1000,new AppEvent(AppEvent.CONNECT_SCREEN));
 				LOG.debug("### initUIDesign : End");
 			}
@@ -192,9 +199,9 @@
 			public function showPopup(message:String, hideAfterClick:Boolean = false):void {
 				LOG.debug("### showPopup : "+message);
 				removePopup();
-				statusPopup = InfoPopup(PopUpManager.createPopUp(FlexGlobals.topLevelApplication as Application, InfoPopup, true));
-				statusPopup.width= 400;
-				statusPopup.height= 200;
+				statusPopup = InfoPopup(PopUpManager.createPopUp(this, InfoPopup, true));
+				statusPopup.width= 300;
+				statusPopup.height= 100;
 				statusPopup.title = "Status";
 				statusPopup.infoLabel.text = message;
 				statusPopup.infoLabel.setStyle("fontSize",25);
@@ -204,8 +211,8 @@
 			
 			private function showConnectingPopup(event:Event):void {
 				LOG.debug("Show Connecting Popup...");
-//				removePopup();
-				connectingPopup = InfoPopup(PopUpManager.createPopUp(FlexGlobals.topLevelApplication as Application, InfoPopup, true));
+				removePopup();
+				connectingPopup = InfoPopup(PopUpManager.createPopUp(this, InfoPopup, true));
 				LOG.debug("1");
 				connectingPopup.title = "Status";
 				connectingPopup.infoLabel.text = "Connecting "+videoConn.connectionType.name+"...";
@@ -215,8 +222,10 @@
 			}			
 			
 			private function showErrorPopup(event:Event):void {
-				var errorPopup:InfoPopup = InfoPopup(PopUpManager.createPopUp(FlexGlobals.topLevelApplication as Application, InfoPopup, true));
+				var errorPopup:InfoPopup = InfoPopup(PopUpManager.createPopUp(this, InfoPopup, true));
 				errorPopup.title = "Error";
+				errorPopup.width = 300;
+				errorPopup.height = 100;
 				removePopup();
 				if (event.type == ConnectionEvent.VIDEO_CONN_FAILED) {
 					errorPopup.infoLabel.text = "Error in establishing RTMP connection. Please try agian.";
@@ -232,8 +241,8 @@
 			
 			public function showConnectBoxAsPopup(component:IUIComponent=null, hideAfterClick:Boolean = false):void {
 				LOG.debug("### showConnectBoxAsPopup : "+component);
-//				removePopup();
-				connectBoxPopup = InfoPopup(PopUpManager.createPopUp(FlexGlobals.topLevelApplication as Application, InfoPopup, true));
+				removePopup();
+				connectBoxPopup = InfoPopup(PopUpManager.createPopUp(this, InfoPopup, true));
 				connectBoxPopup.title = "Connect";
 				connectBoxPopup.removeAllElements();
 //				connectBoxPopup.removeElementAt(connectBoxPopup.getElementIndex(connectingPopup.infoLabel));

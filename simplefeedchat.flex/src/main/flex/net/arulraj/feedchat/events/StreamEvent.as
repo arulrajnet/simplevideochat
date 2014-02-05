@@ -29,7 +29,9 @@ package net.arulraj.feedchat.events
 		
 		public static const PREVIEW_STREAM_BUFFER_FULL:String = "preview.stream.buffer.full";
 		public static const PREVIEW_STREAM_BUFFER_EMPTY:String = "preview.stream.buffer.empty";
+		
 		public static const MEDIA_NOT_ALLOWED:String = "media.not.allowed";
+		public static const MEDIA_ALLOWED:String = "media.allowed";
 		
 		/**
 		 * By Default bubbles are true. Then only we can listen anywhere in the  

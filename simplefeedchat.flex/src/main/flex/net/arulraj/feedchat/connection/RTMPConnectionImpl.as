@@ -199,13 +199,28 @@ package net.arulraj.feedchat.connection
 		public function onCamStatus(event:StatusEvent):void {
 			switch(event.code) {
 				case "Camera.Muted":
-					FlexGlobals.topLevelApplication.avSettings.cameraDetected = false;
+//					FlexGlobals.topLevelApplication.avSettings.cameraDetected = false;
 					GlobalDispatcher.dispatchEvent(new StreamEvent(StreamEvent.MEDIA_NOT_ALLOWED));
 					break;
 				case "Camera.Unmuted":
-					FlexGlobals.topLevelApplication.avSettings.cameraDetected = true;
+//					FlexGlobals.topLevelApplication.avSettings.cameraDetected = true;
+					GlobalDispatcher.dispatchEvent(new StreamEvent(StreamEvent.MEDIA_ALLOWED));
 					break;
 			}
+		}
+		
+		public function onBWCheck(...rest):Number
+		{ 
+			return 0; 
+		} 
+		
+		public function onBWDone(...rest):void
+		{ 
+			var p_bw:Number; 
+			if (rest.length > 0){
+				p_bw = rest[0]; 
+			}
+			LOG.debug("bandwidth = " + p_bw + " Kbps."); 
 		}
 	}
 }

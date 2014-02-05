@@ -222,21 +222,21 @@ package net.arulraj.feedchat.connection
 		 * Once Page loads Preview their webcam on thaat page
 		 *
 		 */
-		public function previewVideoAudio():void {
+		public function previewAudioVideo():void {
 			/**
 			 * CAMERA - PREVIEW
 			 */
-			var liveVideoDisplay:VideoDisplay = FlexGlobals.topLevelApplication.videoBox.liveVideoDisplay;
+//			var liveVideoDisplay:VideoDisplay = FlexGlobals.topLevelApplication.videoBox.liveVideoDisplay;
 			
 			initCamera()
 			
-			if(camera != null) {
-				liveVideo = new Video(liveVideoDisplay.width, liveVideoDisplay.height);
-				liveVideo.attachCamera(camera);
-				liveVideo.x = 0;
-				liveVideo.y = 0;
-				liveVideoDisplay.addChild(liveVideo);
-			}
+//			if(camera != null) {
+//				liveVideo = new Video(liveVideoDisplay.width, liveVideoDisplay.height);
+//				liveVideo.attachCamera(camera);
+//				liveVideo.x = 0;
+//				liveVideo.y = 0;
+//				liveVideoDisplay.addChild(liveVideo);
+//			}
 			
 			/**
 			 * MIC - PREVIEW
@@ -403,17 +403,18 @@ package net.arulraj.feedchat.connection
 
 		private function initCamera():void {
 			var cameraName:String;
-			var cameraArray:ArrayCollection = FlexGlobals.topLevelApplication.avSettings.cameraArray;
+			var cameraArray:ArrayCollection = new ArrayCollection(Camera.names);
 			var camIndex:int = -1;
 			
-			if(cameraArray != null && cameraArray.length > 0) {
-				cameraName = cameraArray.getItemAt(FlexGlobals.topLevelApplication.avSettings.camSeletedItem) as String;
-				camIndex = FlexGlobals.topLevelApplication.avSettings.camSeletedItem;
-			}
+//			if(cameraArray != null && cameraArray.length > 0) {
+//				cameraName = cameraArray.getItemAt(FlexGlobals.topLevelApplication.avSettings.camSeletedItem) as String;
+//				camIndex = FlexGlobals.topLevelApplication.avSettings.camSeletedItem;
+//			}
 			
-			if(camIndex != -1) {
-				//camera = Camera.getCamera(camIndex as String);
+			if(camIndex == -1) {
 				camera = Camera.getCamera();
+			} else {
+				camera = Camera.getCamera(camIndex as String);
 			}
 			
 			LOG.info("Previewing camera "+cameraName+ "  "+camera);
@@ -427,7 +428,8 @@ package net.arulraj.feedchat.connection
 				/*Initialize the camera properties*/
 				//camera.setMode(AppConstants.VIDEO_WIDTH, AppConstants.VIDEO_HEIGHT, AppConstants.CAMERA_FPS, true);
 				//camera.setQuality(AppConstants.MED_CAMERA_BANDWIDTH, AppConstants.MED_CAMERA_QUALITY);
-				changeCameraProperties(FlexGlobals.topLevelApplication.avSettings.aspectSelectedItem, FlexGlobals.topLevelApplication.avSettings.frameRate, FlexGlobals.topLevelApplication.avSettings.camQuality);
+//				changeCameraProperties(FlexGlobals.topLevelApplication.avSettings.aspectSelectedItem, FlexGlobals.topLevelApplication.avSettings.frameRate, FlexGlobals.topLevelApplication.avSettings.camQuality);
+				changeCameraProperties(1,AppConstants.MEDIUM_CAMERA_FPS,AppConstants.DEFAULT_QUALITY);
 				camera.addEventListener(ActivityEvent.ACTIVITY, onVideoActivity);
 			} else {
 				/* Add a black window? */
@@ -438,21 +440,24 @@ package net.arulraj.feedchat.connection
 		
 		private function initMicrophone():void {
 			var microphoneName:String;
-			var micArray:ArrayCollection = FlexGlobals.topLevelApplication.avSettings.micArray;
+			var micArray:ArrayCollection = new ArrayCollection(Microphone.names);
 			var micIndex:int = -1;
 			
-			if(micArray != null && micArray.length > 0) {
-				microphoneName = micArray.getItemAt(FlexGlobals.topLevelApplication.avSettings.micSelectedItem) as String;
-				micIndex = FlexGlobals.topLevelApplication.avSettings.micSelectedItem;
-			}
-			if(micIndex != -1) {
-				//microphone = Microphone.getMicrophone(micIndex);
+//			if(micArray != null && micArray.length > 0) {
+//				microphoneName = micArray.getItemAt(FlexGlobals.topLevelApplication.avSettings.micSelectedItem) as String;
+//				micIndex = FlexGlobals.topLevelApplication.avSettings.micSelectedItem;
+//			}
+			
+			if(micIndex == -1) {
 				microphone = Microphone.getMicrophone();
+			} else {
+				microphone = Microphone.getMicrophone(micIndex);
 			}
 			
 			LOG.info("previewing microphone "+microphoneName+ "  "+microphone);
 			if(microphone != null) {
-				changeMicrophoneProperties(FlexGlobals.topLevelApplication.avSettings.micVolume, FlexGlobals.topLevelApplication.avSettings.micQuality);
+//				changeMicrophoneProperties(FlexGlobals.topLevelApplication.avSettings.micVolume, FlexGlobals.topLevelApplication.avSettings.micQuality);
+				changeMicrophoneProperties(AppConstants.AUDIO_GAIN, AppConstants.DEFAULT_QUALITY);
 				//microphone.codec = SoundCodec.SPEEX;
 				//microphone.encodeQuality = AppConstants.MED_AUDIO_QUALITY;
 				microphone.rate = AppConstants.MED_AUDIO_RATE;
@@ -465,7 +470,7 @@ package net.arulraj.feedchat.connection
 				microphone.addEventListener(ActivityEvent.ACTIVITY, this.onMicActivity); 
 				microphone.addEventListener(StatusEvent.STATUS, this.onMicStatus); 
 				this.addEventListener(Event.ENTER_FRAME, this.updateMicMeter);
-				FlexGlobals.topLevelApplication.commonTimer.addEventListener(TimerEvent.TIMER, this.updateMicMeter);
+				GlobalDispatcher.addEventListener(TimerEvent.TIMER, this.updateMicMeter);
 				
 				var micDetails:String = '\n'+"Sound input device name: " + microphone.name + '\n'; 
 				micDetails += "Gain: " + microphone.gain + '\n'; 
