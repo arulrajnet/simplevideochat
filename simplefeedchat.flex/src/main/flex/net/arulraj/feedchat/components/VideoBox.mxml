@@ -165,8 +165,20 @@
 		]]>
 	</fx:Script>
 	<s:Group id="noPartnerBox" width="{this.width}" height="{this.height}" includeIn="nopartner">
-		<s:Label verticalAlign="middle" text="Partner not avilable." />
+		
+		<s:Label text="Partner not avilable." width="{this.width}" height="{this.height}"
+				 fontSize="18"
+				 textAlign="center" verticalAlign="middle"/>
+		<s:Rect width="{noPartnerBox.width}" height="{noPartnerBox.height}">
+			<s:stroke>
+				<s:SolidColorStroke color="0x000000" weight="1" />
+			</s:stroke>		
+			<s:fill>
+				<s:BitmapFill source="@Embed(source='/assets/bgpix.png')" alpha="0.5" />
+			</s:fill>
+		</s:Rect>		
 	</s:Group>
+	
 	<s:Group id="partnerVideoBox" width="{this.width}" height="{this.height}" includeIn="chating">
 		<s:SkinnableContainer id="partnerVideoSkin" visible="true"
 							  height="{partnerVideoBox.height}" width="{partnerVideoBox.width}"
@@ -182,45 +194,33 @@
 			</s:layout>			
 		</s:Group>
 	</s:Group>
-	<!--
-	<s:Group id="liveVideoBox" width="360" height="240" >
-		<s:VideoDisplay id="liveVideoDisplay" name="liveVideoDisplay"
-						width="{liveVideoBox.width}" height="{liveVideoBox.height}" />
-
-		<s:Group x="0" y="0"
-				 width="{liveVideoBox.width}" height="{liveVideoBox.height}">
-			<s:layout>
-				<s:VerticalLayout />
-			</s:layout>
-			<s:Group id="recordInfo" width="100%" >
+	<s:VGroup gap="10">
+		<s:Group id="liveVideoBox" width="240" height="120" >
+			<s:VideoDisplay id="liveVideoDisplay" name="liveVideoDisplay"
+							width="{liveVideoBox.width}" height="{liveVideoBox.height}" />
+	
+			<s:Group x="0" y="0"
+					 width="{liveVideoBox.width}" height="{liveVideoBox.height}">
 				<s:layout>
-					<s:HorizontalLayout paddingLeft="5" paddingRight="5" paddingTop="5" />
+					<s:VerticalLayout />
 				</s:layout>
-				<s:Button icon="@Embed('/assets/webcamON.png')" x="0" y="0" width="35" height="18" click="showMediaSettings(event)" 
-						  id="webcamSettings" toolTip="webcam settings" />
-			</s:Group>
-			<s:Group id="liveButtonBar" width="100%" height="100%">
-				<s:layout>
-					<s:HorizontalLayout verticalAlign="middle" horizontalAlign="center" gap="0" />
-				</s:layout>
-				<s:Button id="sendButton" includeIn="normal" label="Send Video" visible="false"
-						  includeInLayout="{sendButton.visible}"
-						  icon="@Embed(source='/assets/rec32.png')" toolTip="Click here to START sending Video"
-						  buttonDown="onStartClick(event)" enabled="{application.avSettings.cameraDetected}" />
-				
-				<s:Button id="stopButton" includeIn="chating" label="Stop Video" visible="false"
-						  includeInLayout="{stopButton.visible}"
-						  icon="@Embed(source='/assets/rec32.png')" toolTip="Click here to STOP sending Video"
-						  enabled="true" buttonDown="onStopClick(event)" />
-			</s:Group>
+				<s:Group id="recordInfo" width="100%" >
+					<s:layout>
+						<s:HorizontalLayout paddingLeft="5" paddingRight="5" paddingTop="5" />
+					</s:layout>
+					<s:Button icon="@Embed('/assets/webcamON.png')" x="0" y="0" width="35" height="18" click="showMediaSettings(event)" 
+							  id="webcamSettings" toolTip="webcam settings" />
+				</s:Group>			
+			</s:Group>		
+		</s:Group>
+		<s:HGroup gap="5" verticalAlign="middle">
+			<s:Button icon="@Embed('/assets/unmute.png')" width="40" height="40" id="unmuteButton" toolTip="Mute Audio" />
+			<s:Button icon="@Embed('/assets/mute.png')" width="40" height="40" id="muteButton" toolTip="Un mute Audio" />
 			<mx:ProgressBar id="micProgress" name="micProgress"
 							styleName="micLevelProgressBar"
-							minimum="0" maximum="100" width="100%"
+							minimum="0" maximum="100" width="80%"
 							label="volume" labelPlacement="center"
 							mode="manual" visible="true"/>
-			
-			<components:SettingsBox id="settingsBox" name="settingsBox" includeIn="setting" />
-		</s:Group>		
-	</s:Group>	
-	-->
+		</s:HGroup>
+	</s:VGroup>
 </s:Group>

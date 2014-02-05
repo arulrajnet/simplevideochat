@@ -226,17 +226,17 @@ package net.arulraj.feedchat.connection
 			/**
 			 * CAMERA - PREVIEW
 			 */
-//			var liveVideoDisplay:VideoDisplay = FlexGlobals.topLevelApplication.videoBox.liveVideoDisplay;
+			var liveVideoDisplay:VideoDisplay = FlexGlobals.topLevelApplication.videoBox.liveVideoDisplay;
 			
 			initCamera()
 			
-//			if(camera != null) {
-//				liveVideo = new Video(liveVideoDisplay.width, liveVideoDisplay.height);
-//				liveVideo.attachCamera(camera);
-//				liveVideo.x = 0;
-//				liveVideo.y = 0;
-//				liveVideoDisplay.addChild(liveVideo);
-//			}
+			if(camera != null) {
+				liveVideo = new Video(liveVideoDisplay.width, liveVideoDisplay.height);
+				liveVideo.attachCamera(camera);
+				liveVideo.x = 0;
+				liveVideo.y = 0;
+				liveVideoDisplay.addChild(liveVideo);
+			}
 			
 			/**
 			 * MIC - PREVIEW
