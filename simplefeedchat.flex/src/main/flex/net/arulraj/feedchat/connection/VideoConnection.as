@@ -55,7 +55,7 @@ package net.arulraj.feedchat.connection
 		private var audioStream:NetStream = null;
 		private var partnerVStream:NetStream = null;
 		private var partnerAStream:NetStream = null;
-		private var playbackStreamStatus:PlaybackStreamStatus = null;
+		private var partnerStreamStatus:PartnerStreamStatus = null;
 		private var liveVideo:Video = null;
 		private var partnerVideo:Video = null;
 		
@@ -339,15 +339,17 @@ package net.arulraj.feedchat.connection
 		 * Partner functions
 		 */
 		public function playParnerMedia():void {
+			LOG.debug("Start: playParnerMedia");
 			stopPartnerMedia();
 			var streamName:String = FlexGlobals.topLevelApplication.partnerId;
 			var partnerVDisplay:VideoDisplay = null;
 			partnerVDisplay = FlexGlobals.topLevelApplication.videoBox.partnerVideoDisplay;
+			LOG.debug("sName "+streamName+ " partnerVDisplay : "+partnerVDisplay);
 			if(partnerVStream == null) {
 				partnerVStream = new NetStream(this);
-				partnerVStream.addEventListener(NetStatusEvent.NET_STATUS, netConnectionStatus);
-				partnerVStream.addEventListener("status", streamStatus);
-				partnerVStream.addEventListener("error", streamError);        
+				partnerVStream.addEventListener(NetStatusEvent.NET_STATUS, partnerStreamStatus.netStreamStatus);
+				partnerVStream.addEventListener("status", partnerStreamStatus.streamStatus);
+				partnerVStream.addEventListener("error", partnerStreamStatus.streamError);        
 			}
 			if(AppConstants.IS_SINGLE_SREAM) {
 				partnerVStream.play(streamName+"_av", -1, -1, true);
@@ -366,6 +368,7 @@ package net.arulraj.feedchat.connection
 		}
 		
 		public function stopPartnerMedia():void {
+			LOG.debug("Start: stopPartnerMedia");
 			if(partnerVStream != null) {
 				partnerVStream.attachAudio(null);
 				partnerVStream.attachCamera(null);
@@ -375,7 +378,8 @@ package net.arulraj.feedchat.connection
 					partnerVideo.attachNetStream(null);
 					partnerVideo = null;
 				}
-			}			
+			}
+			LOG.debug("End: stopPartnerMedia");
 		}
 
 		private function handleBufferCheck(e:TimerEvent):void {
@@ -511,28 +515,28 @@ package net.arulraj.feedchat.connection
 
 			if(partnerVStream == null) {
 				/**
-				 * Initialize the Netstream for play the recorded video stream
+				 * Initialize the Netstream for play the partner video stream
 				 **/
-				playbackStreamStatus = new PlaybackStreamStatus(this);
+				partnerStreamStatus = new PartnerStreamStatus(this);
 				partnerVStream = new NetStream(this);
 				partnerVStream.bufferTime = 1;
-				partnerVStream.addEventListener(NetStatusEvent.NET_STATUS, playbackStreamStatus.netStreamStatus);
-				partnerVStream.addEventListener("status", playbackStreamStatus.streamStatus);
-				partnerVStream.addEventListener("error", playbackStreamStatus.streamError);
-				partnerVStream.client = playbackStreamStatus;
+				partnerVStream.addEventListener(NetStatusEvent.NET_STATUS, partnerStreamStatus.netStreamStatus);
+				partnerVStream.addEventListener("status", partnerStreamStatus.streamStatus);
+				partnerVStream.addEventListener("error", partnerStreamStatus.streamError);
+				partnerVStream.client = partnerStreamStatus;
 			}
 
 			if(partnerAStream == null) {
 				/**
 				 * Initialize the Netstream for play the recorded video stream
 				 **/
-				playbackStreamStatus = new PlaybackStreamStatus(this);
+				partnerStreamStatus = new PartnerStreamStatus(this);
 				partnerAStream = new NetStream(this);
 				partnerAStream.bufferTime = 1;
-				partnerAStream.addEventListener(NetStatusEvent.NET_STATUS, playbackStreamStatus.netStreamStatus);
-				partnerAStream.addEventListener("status", playbackStreamStatus.streamStatus);
-				partnerAStream.addEventListener("error", playbackStreamStatus.streamError);
-				partnerAStream.client = playbackStreamStatus;
+				partnerAStream.addEventListener(NetStatusEvent.NET_STATUS, partnerStreamStatus.netStreamStatus);
+				partnerAStream.addEventListener("status", partnerStreamStatus.streamStatus);
+				partnerAStream.addEventListener("error", partnerStreamStatus.streamError);
+				partnerAStream.client = partnerStreamStatus;
 			}
 		}		
 		

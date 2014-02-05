@@ -138,6 +138,9 @@
 				GlobalDispatcher.addEventListener(AppEvent.MICROPHONE_UNMUTED, videoConn.toggleMute);
 				GlobalDispatcher.addEventListener(AppEvent.MICROPHONE_MUTED, videoConn.toggleMute);
 				
+				GlobalDispatcher.addEventListener(AppEvent.PARTNER_ARRIVED, onPartnerArrived);
+				GlobalDispatcher.addEventListener(AppEvent.PARTNER_WENT, onPartnerWent);
+				
 				commonTimer.addEventListener(TimerEvent.TIMER, videoConn.updateMicMeter);
 				
 				LOG.debug("### initListeners : End");
@@ -202,6 +205,15 @@
 				videoConn.connectionType = ConnectionType.RTMP;
 				videoConn.getConnection();
 			}
+			
+			private function onPartnerArrived(event:AppEvent):void {
+				videoBox.currentState = "chating";
+			}
+			
+			private function onPartnerWent(event:AppEvent):void {
+				videoBox.currentState = "nopartner";
+				videoBox.clearVideoDisplay();
+			}			
 			
 			/**
 			 * Show popup screens

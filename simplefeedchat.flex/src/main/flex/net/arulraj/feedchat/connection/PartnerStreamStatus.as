@@ -6,15 +6,18 @@ package net.arulraj.feedchat.connection
 	import mx.logging.ILogger;
 	import mx.logging.Log;
 	
+	import net.arulraj.feedchat.events.AppEvent;
 	import net.arulraj.feedchat.events.StreamEvent;
+	
+	import turbosqel.events.GlobalDispatcher;
 
-	public class PlaybackStreamStatus
+	public class PartnerStreamStatus
 	{
-		private static var LOG:ILogger = Log.getLogger('net.arulraj.feedchat.connection.PlayStreamStatus');
+		private static var LOG:ILogger = Log.getLogger('net.arulraj.feedchat.connection.PartnerStreamStatus');
 		
 		private var connection:RTMPConnectionImpl;		
 		
-		public function PlaybackStreamStatus(connection:RTMPConnectionImpl)
+		public function PartnerStreamStatus(connection:RTMPConnectionImpl)
 		{
 			this.connection = connection;
 		}
@@ -25,9 +28,9 @@ package net.arulraj.feedchat.connection
 			if (event.info.code == "NetStream.Play.UnpublishNotify") {
 				
 			} else if(event.info.code == "NetStream.Play.Start") {
-				FlexGlobals.topLevelApplication.videoBox.currentState = "chating";
+				GlobalDispatcher.dispatchEvent(new AppEvent(AppEvent.PARTNER_ARRIVED));
 			} else if(event.info.code == "NetStream.Play.Stop") {
-				FlexGlobals.topLevelApplication.videoBox.currentState = "nopartner";
+				GlobalDispatcher.dispatchEvent(new AppEvent(AppEvent.PARTNER_WENT));
 			} else if(event.info.code == "NetStream.Publish.Start") {
 				
 			} else if(event.info.code == "NetStream.Unpublish.Success") {
@@ -35,7 +38,7 @@ package net.arulraj.feedchat.connection
 			} else if(event.info.code == "NetStream.Publish.BadName") {
 				
 			} else if(event.info.code == "NetStream.Play.UnpublishNotify") {
-				FlexGlobals.topLevelApplication.videoBox.currentState = "nopartner";
+				GlobalDispatcher.dispatchEvent(new AppEvent(AppEvent.PARTNER_WENT));
 			} else if(event.info.code == "NetStream.Record.Stop") {
 				
 			} else if(event.info.code == "NetStream.Record.Start") {

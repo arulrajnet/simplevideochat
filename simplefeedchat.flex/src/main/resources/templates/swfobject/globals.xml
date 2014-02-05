@@ -3,6 +3,7 @@
 	<static>
 		<net.arulraj.feedchat.utils.AppConstants.RED5_SERVER type="String" value= "50.28.15.118"/>
 		<net.arulraj.feedchat.utils.AppConstants.PHP_SERVER type="String" value= "http://beourbuddy.com/ohmibod/"/>
+		<net.arulraj.feedchat.utils.AppConstants.MAIN_APP type="String" value= "vod"/>
 		<view.FemaleAction.VOLUME_OVERRIDE type="Number" value="1.2"/>
 		<view.FemaleAction.SOUND value="track.mp3"/>
 		<view.SignupScreen.FONT_SIZE type="int" value="25" />

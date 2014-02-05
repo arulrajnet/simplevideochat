@@ -18,6 +18,10 @@ package net.arulraj.feedchat.events {
 		
 		public static const MICROPHONE_UNMUTED:String = "microphoneUnmuted";
 		
+		public static const PARTNER_ARRIVED:String = "partnerArrived";
+		
+		public static const PARTNER_WENT:String = "partnerWent";
+		
 		public static const SHOW_MALE_LOGIN:String = "maleLogin";
 		public static const SHOW_FEMALE_LOGIN:String = "femaleLogin";
 		

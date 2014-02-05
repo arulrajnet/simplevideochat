@@ -150,7 +150,8 @@
 			public function clearVideoDisplay():void {
 				var videoObject:Video = partnerVideoDisplay.videoObject;
 				if(videoObject != null) {
-					videoObject.clear();	
+					videoObject.clear();
+					partnerVideoDisplay.removeChild(videoObject);
 				}
 			}
 
@@ -166,7 +167,7 @@
 			}
 		]]>
 	</fx:Script>
-	<s:Group id="noPartnerBox" width="{this.width}" height="{this.height}" includeIn="nopartner">
+	<!--<s:Group id="noPartnerBox" width="{this.width}" height="{this.height}" includeIn="nopartner">
 		
 		<s:Label text="Partner not avilable." width="{this.width}" height="{this.height}"
 				 fontSize="18"
@@ -179,22 +180,19 @@
 				<s:BitmapFill source="@Embed(source='/assets/bgpix.png')" alpha="0.5" />
 			</s:fill>
 		</s:Rect>		
-	</s:Group>
+	</s:Group>-->
 	
-	<s:Group id="partnerVideoBox" width="{this.width}" height="{this.height}" includeIn="chating">
+	<s:Group id="partnerVideoBox" x="0" y="0" width="{this.width}" height="{this.height}">
 		<s:SkinnableContainer id="partnerVideoSkin" visible="true"
 							  height="{partnerVideoBox.height}" width="{partnerVideoBox.width}"
 							  skinClass="net.arulraj.feedchat.skin.VideoDisplaySkin">
 		</s:SkinnableContainer>		
 		<s:VideoDisplay id="partnerVideoDisplay" name="partnerVideoDisplay"
+						autoDisplayFirstFrame="false"
 						width="{partnerVideoBox.width}" height="{partnerVideoBox.height}" />
-		<s:Group id="partnerButtonBar" name="partnerButtonBar"
-				 x="{partnerVideoDisplay.x}" y="{partnerVideoDisplay.y}"
-				 width="{partnerVideoDisplay.width}" height="{partnerVideoDisplay.height}">
-			<s:layout>
-				<s:HorizontalLayout verticalAlign="middle" horizontalAlign="center" gap="0" />
-			</s:layout>			
-		</s:Group>
+		<s:Label text="Partner not avilable." width="{this.width}" height="{this.height}"
+				 fontSize="18" textAlign="center" verticalAlign="middle"
+				 includeIn="nopartner" />
 	</s:Group>
 	<s:VGroup gap="10">
 		<s:Group id="liveVideoBox" width="240" height="120" >
