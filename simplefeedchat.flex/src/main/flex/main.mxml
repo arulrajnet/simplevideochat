@@ -71,6 +71,9 @@
 			public var userId:String;
 			
 			[Bindable]
+			public var userName:String;
+			
+			[Bindable]
 			public var partnerId:String;
 			
 			[Bindable]
@@ -147,7 +150,7 @@
 			private function initMediaConnection(event:AppEvent):void {
 				LOG.debug(event.type);
 				LOG.debug(event.code);
-				userId = event.code;
+				userName = event.code;
 				removePopup();
 				if(connectBoxPopup != null && connectBoxPopup.parent) {
 					connectBoxPopup.close();
@@ -179,6 +182,7 @@
 				var globalsXml:XML = new XML(configResource.loaderInfo.source);
 				AppConstants.RED5_SERVER = globalsXml.static[0].elements("net.arulraj.feedchat.utils.AppConstants.RED5_SERVER").@["value"];
 				AppConstants.PHP_SERVER = globalsXml.static[0].elements("net.arulraj.feedchat.utils.AppConstants.PHP_SERVER").@["value"];
+				AppConstants.MAIN_APP = globalsXml.static[0].elements("net.arulraj.feedchat.utils.AppConstants.MAIN_APP").@["value"];
 				setTimeout(GlobalDispatcher.dispatchEvent,1000,new AppEvent(AppEvent.CONNECT_SCREEN));
 				LOG.debug("### initUIDesign : End");
 			}
@@ -280,6 +284,18 @@
 				var port:int = URLUtil.getPort(url);
 				var protocol:String = URLUtil.getProtocol(url);
 				
+				if(userId == null) {
+					this.userId = "20";
+				} else {
+					this.userId = userId;
+				}
+				
+				if(partnerId == null) {
+					this.partnerId = "21";
+				} else {
+					this.partnerId = partnerId;
+				}				
+				
 				LOG.debug("Hostname : "+red5server+" Port : "+red5port+
 					" Secure : "+red5secure+ " userId : "+ userId+ " partnerId : "+partnerId);				
 			}
@@ -290,5 +306,5 @@
 		<s:VerticalLayout horizontalAlign="center" verticalAlign="middle" />
 	</s:layout>
 	<components:VideoBox id="videoBox" width="600" height="480" />
-	<components:SettingsBox id="settingBox" width="600" />
+	<!--<components:SettingsBox id="settingBox" width="600" />-->
 </s:Application>

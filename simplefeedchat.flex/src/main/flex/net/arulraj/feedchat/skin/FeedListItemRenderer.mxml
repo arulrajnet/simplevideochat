@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" 
+				autoDrawBackground="true" focusEnabled="false">
+	
+	<s:states>
+		<s:State name="normal" />
+		<s:State name="hovered" />
+		<s:State name="selected" />
+		<s:State name="normalAndShowsCaret" />
+		<s:State name="hoveredAndShowsCaret" />
+		<s:State name="selectedAndShowsCaret" />
+	</s:states>	
+	
+	<s:Rect left="0" right="0" top="0" bottom="0">
+		<s:fill>
+			<s:SolidColor color="white"
+						  alpha="0"
+						  alpha.hovered="0.4"
+						  alpha.selected="0.4"
+						  alpha.selectedAndShowsCaret="0.4" />
+		</s:fill>
+	</s:Rect>
+	
+	<s:VGroup>
+		<s:HGroup>
+			<s:BitmapImage source="{data.icon}" width="50" height="50" />
+			
+			<s:Label color="black"
+					 maxDisplayedLines="1"
+					 backgroundAlpha="0.3"
+					 width="100%"
+					 bottom="0"
+					 top="0"
+					 left="55"
+					 paddingLeft="5" paddingRight="5"
+					 paddingTop="5" paddingBottom="5"
+					 fontSize="12" textAlign="left" verticalAlign="middle"
+					 includeIn="hovered,hoveredAndShowsCaret,selected,selectedAndShowsCaret">
+				<s:text>{data.name}</s:text>
+			</s:Label>
+		</s:HGroup>
+		<s:Label color="black"
+				 left="55"
+				 includeIn="hovered,hoveredAndShowsCaret,selected,selectedAndShowsCaret">>
+			<s:text>{data.message}</s:text>
+		</s:Label>		
+	</s:VGroup>
+	
+</s:ItemRenderer>

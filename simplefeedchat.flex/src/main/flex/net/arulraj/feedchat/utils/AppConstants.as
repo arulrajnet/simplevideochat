@@ -20,7 +20,7 @@ package net.arulraj.feedchat.utils
 		public static var PHP_SERVER:String = "localhost";
 		
 		/*rtmp constants*/		
-		public static const MAIN_APP:String = "vod";
+		public static var MAIN_APP:String = "vod";
 		public static const RTMP_PORT:Number = 1935;
 		public static const RTMPT_PORT:Number = 8088;
 		public static const HTTP_PORT:Number = 5080;

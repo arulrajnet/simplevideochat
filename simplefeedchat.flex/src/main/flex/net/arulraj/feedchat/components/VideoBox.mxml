@@ -66,6 +66,7 @@
 			private static var LOG:ILogger = Log.getLogger('net.arulraj.feedchat.components.VideoBox');
 			
 			private function onCreationComplete():void {
+				this.currentState = "nopartner";
 			}
 			
 			private function showControlBox(event:MouseEvent):void {
