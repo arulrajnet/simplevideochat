@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>simplefeedchat.all</artifactId>
+  <artifactId>simplevchat.all</artifactId>
   <packaging>pom</packaging>
-  <name>simplefeedchat.all</name>
+  <name>simplevchat.all</name>
   <version>0.0.1</version>
   <description>Simple chat in flex with two people</description>
   <groupId>net.arulraj.feedchat</groupId>
@@ -23,14 +23,14 @@
   </developers>
 
   <modules>
-    <module>simplefeedchat.flex</module>
-    <module>simplefeedchat.red5</module>
+    <module>simplevchat.flex</module>
+    <module>simplevchat.red5</module>
   </modules>
   
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.build.version>0.0.1</project.build.version>
-    <project.flex.htmlWrapperPath>${project.parent.basedir}/simplefeedchat.red5/src/main/webapp/html/</project.flex.htmlWrapperPath>
+    <project.flex.htmlWrapperPath>${project.parent.basedir}/simplevchat.red5/src/main/webapp/html/</project.flex.htmlWrapperPath>
     <jdk.version>1.6</jdk.version>
     <!-- red5 properties -->
     <red5.version>1.0.2-RC3</red5.version>
@@ -98,7 +98,7 @@
         <configuration>
           <filesets>
             <fileset>
-              <directory>${project.parent.basedir}/simplefeedchat.red5/src/main/webapp/html</directory>
+              <directory>${project.parent.basedir}/simplevchat.red5/src/main/webapp/html</directory>
             </fileset>
           </filesets>
         </configuration>

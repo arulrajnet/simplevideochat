@@ -3,19 +3,19 @@
   <!-- refer from http://red5.googlecode.com/svn/repository/org/red5/red5-server/1.0-java6/red5-server-1.0-java6.pom -->
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.arulraj.feedchat</groupId>
-  <artifactId>simplefeedchat.red5</artifactId>
+  <artifactId>simplevchat.red5</artifactId>
   <packaging>war</packaging>
-  <name>simplefeedchat.red5</name>  
+  <name>simplevchat.red5</name>  
 
   <parent>
     <groupId>net.arulraj.feedchat</groupId>
-    <artifactId>simplefeedchat.all</artifactId>
+    <artifactId>simplevchat.all</artifactId>
     <version>0.0.1</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <build>
-    <finalName>simplefeedchat</finalName>
+    <finalName>simplevchat</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -79,7 +79,7 @@
     <!-- Flex dependencies -->
     <dependency>
       <groupId>net.arulraj.feedchat</groupId>
-      <artifactId>simplefeedchat.flex</artifactId>
+      <artifactId>simplevchat.flex</artifactId>
       <version>${project.version}</version>
       <type>swf</type>
     </dependency>

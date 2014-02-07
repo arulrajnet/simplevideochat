@@ -3,4 +3,4 @@
 target
 *.class
 *.log
-/simplefeedchat.red5/src/main/webapp/html/
+/simplevchat.red5/src/main/webapp/html/
