@@ -3,6 +3,6 @@
 	<static>
 		<net.arulraj.simplevchat.utils.AppConstants.RED5_SERVER type="String" value= "50.28.15.118"/>
 		<net.arulraj.simplevchat.utils.AppConstants.PHP_SERVER type="String" value= "http://beourbuddy.com/ohmibod/"/>
-		<net.arulraj.simplevchat.utils.AppConstants.MAIN_APP type="String" value= "vod"/>
+		<net.arulraj.simplevchat.utils.AppConstants.MAIN_APP type="String" value= "simplevchat"/>
 	</static>
 </data>
