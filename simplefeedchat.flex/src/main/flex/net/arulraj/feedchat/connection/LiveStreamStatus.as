@@ -7,13 +7,13 @@ package net.arulraj.feedchat.connection
 	import mx.logging.ILogger;
 	import mx.logging.Log;
 
-	public class PreviewStreamStatus
+	public class LiveStreamStatus
 	{
 		private static var LOG:ILogger = Log.getLogger('net.arulraj.feedchat.connection.PlayStreamStatus');
 		
 		private var connection:RTMPConnectionImpl;		
 		
-		public function PreviewStreamStatus(connection:RTMPConnectionImpl)
+		public function LiveStreamStatus(connection:RTMPConnectionImpl)
 		{
 			this.connection = connection;
 		}

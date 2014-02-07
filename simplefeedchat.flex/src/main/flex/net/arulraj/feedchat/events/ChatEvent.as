@@ -2,7 +2,7 @@
  * File   : ChatEvent.as
  * Date   : Jan 25, 2014
  * Owner  : arul
- * Project  : nwrclient
+ * Project  : simplevchat
  * Contact  : http://www.arulraj.net
  * Description :
  * History  :

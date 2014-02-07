@@ -2,7 +2,7 @@
  * File		: ChatMessage.as
  * Date		: Jan 23, 2014
  * Owner	: arul
- * Project	: nwrclient
+ * Project	: simplevchat
  * Contact	: http://www.arulraj.net
  * Description :
  * History	:

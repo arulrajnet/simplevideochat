@@ -2,7 +2,7 @@
  * File		: RTMPConnection.as
  * Date		: Jan 21, 2014
  * Owner	: arul
- * Project	: nwrclient
+ * Project	: simplevchat
  * Contact	: http://www.arulraj.net
  * Description :
  * History	:
