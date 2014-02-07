@@ -1,6 +1,6 @@
-package net.arulraj.feedchat.connection
+package net.arulraj.simplevchat.connection
 {
-	import net.arulraj.feedchat.events.StreamEvent;
+	import net.arulraj.simplevchat.events.StreamEvent;
 	
 	import flash.events.NetStatusEvent;
 	

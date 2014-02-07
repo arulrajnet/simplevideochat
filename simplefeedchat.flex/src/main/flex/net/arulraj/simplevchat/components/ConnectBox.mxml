@@ -2,7 +2,7 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
-		 xmlns:utils="net.arulraj.feedchat.utils.*">
+		 xmlns:utils="net.arulraj.simplevchat.utils.*">
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 		<fx:Array id="validators">
@@ -15,7 +15,7 @@
 			import mx.logging.ILogger;
 			import mx.logging.Log;
 			
-			import net.arulraj.feedchat.events.AppEvent;
+			import net.arulraj.simplevchat.events.AppEvent;
 			
 			import turbosqel.events.GlobalDispatcher;
 			

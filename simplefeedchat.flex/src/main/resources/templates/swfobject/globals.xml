@@ -1,37 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <data>
 	<static>
-		<net.arulraj.feedchat.utils.AppConstants.RED5_SERVER type="String" value= "50.28.15.118"/>
-		<net.arulraj.feedchat.utils.AppConstants.PHP_SERVER type="String" value= "http://beourbuddy.com/ohmibod/"/>
-		<net.arulraj.feedchat.utils.AppConstants.MAIN_APP type="String" value= "vod"/>
-		<view.FemaleAction.VOLUME_OVERRIDE type="Number" value="1.2"/>
-		<view.FemaleAction.SOUND value="track.mp3"/>
-		<view.SignupScreen.FONT_SIZE type="int" value="25" />
-		<view.MaleLogin.USER_TEXT type="String" value="username*" />
-		<view.MaleLogin.PASS_TEXT type="String" value="password*" />
-		<!-- 
-		<view.MaleLogin.INVALID_LOGIN type="String" value="User name is required." />
-		<view.MaleLogin.INVALID_PASS type="String" value="Password is required." />
-		 -->
-		<view.MaleLogin.INVALID_LOGIN type="String" value="Username must have 6 chars." />
-		<view.MaleLogin.INVALID_PASS type="String" value="Password  must have 6 chars." />
-		<view.SignupScreen.USERNAME type="String" value="username *" />
-		<view.SignupScreen.FILL_USERNAME type="String" value="Username required" />
-		<view.SignupScreen.PASSWORD type="String" value="password *" />
-		<view.SignupScreen.FILL_PASSWORD type="String" value="Password required" />
-		<view.SignupScreen.EMAIL type="String" value="email *" />
-		<view.SignupScreen.FILL_EMAIL type="String" value="Email required" />
-		<view.SignupScreen.AGE type="String" value="age *" />
-		<view.SignupScreen.FILL_AGE type="String" value="Age required" />
-		<view.SignupScreen.COLOR type="color" value="0x8e8d8d" />
-		<!-- first is circle 1 and 2 size , than 3color gradient for circle1 and circle2 -->
-		<view.ClickArea.C1_SIZE type="int" value="40" />
-		<view.ClickArea.C2_SIZE type="int" value="60" />
-		<view.ClickArea.C1_COLOR1 type="color" value="0xe19973" />
-		<view.ClickArea.C1_COLOR2 type="color" value="0xff7750" />
-		<view.ClickArea.C1_COLOR3 type="color" value="0xd077d0" />
-		<view.ClickArea.C2_COLOR1 type="color" value="0xf19993" />
-		<view.ClickArea.C2_COLOR2 type="color" value="0xe097c0" />
-		<view.ClickArea.C2_COLOR3 type="color" value="0xe077b0" />
+		<net.arulraj.simplevchat.utils.AppConstants.RED5_SERVER type="String" value= "50.28.15.118"/>
+		<net.arulraj.simplevchat.utils.AppConstants.PHP_SERVER type="String" value= "http://beourbuddy.com/ohmibod/"/>
+		<net.arulraj.simplevchat.utils.AppConstants.MAIN_APP type="String" value= "vod"/>
 	</static>
 </data>

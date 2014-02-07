@@ -1,7 +1,7 @@
 /**
  * @author Arulaj
  */
-package net.arulraj.feedchat.utils {
+package net.arulraj.simplevchat.utils {
 	
 	import mx.logging.Log;
 	import mx.logging.ILogger;			
@@ -10,7 +10,7 @@ package net.arulraj.feedchat.utils {
 			
 	public class AppUtility {
 		
-		private static var LOG:ILogger = Log.getLogger('net.arulraj.feedchat.utils.AppUtility');			
+		private static var LOG:ILogger = Log.getLogger('net.arulraj.simplevchat.utils.AppUtility');			
 		
 		public function AppUtility() {
 			

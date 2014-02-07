@@ -8,7 +8,7 @@
  * History  :
  */
 
-package net.arulraj.feedchat.connection
+package net.arulraj.simplevchat.connection
 {
 	import flash.events.ActivityEvent;
 	import flash.events.AsyncErrorEvent;
@@ -23,16 +23,16 @@ package net.arulraj.feedchat.connection
 	import mx.logging.ILogger;
 	import mx.logging.Log;
 	
-	import net.arulraj.feedchat.events.ConnectionEvent;
-	import net.arulraj.feedchat.events.StreamEvent;
-	import net.arulraj.feedchat.models.ConnectionType;
-	import net.arulraj.feedchat.utils.AppConstants;
+	import net.arulraj.simplevchat.events.ConnectionEvent;
+	import net.arulraj.simplevchat.events.StreamEvent;
+	import net.arulraj.simplevchat.models.ConnectionType;
+	import net.arulraj.simplevchat.utils.AppConstants;
 	
 	import turbosqel.events.GlobalDispatcher;
 	
 	public class RTMPConnectionImpl extends NetConnection implements RTMPConnection
 	{
-		private static var LOG:ILogger = Log.getLogger('net.arulraj.feedchat.connection.RTMPConnectionImpl');
+		private static var LOG:ILogger = Log.getLogger('net.arulraj.simplevchat.connection.RTMPConnectionImpl');
 		private var hostname:String;
 		private var scope:String;
 		private var port:Number;

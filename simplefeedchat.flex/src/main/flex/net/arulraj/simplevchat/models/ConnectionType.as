@@ -1,4 +1,4 @@
-package net.arulraj.feedchat.models
+package net.arulraj.simplevchat.models
 {
 	import mx.utils.StringUtil;
 	

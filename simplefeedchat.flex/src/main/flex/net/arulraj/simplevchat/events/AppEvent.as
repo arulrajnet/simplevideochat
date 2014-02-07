@@ -1,4 +1,4 @@
-package net.arulraj.feedchat.events {
+package net.arulraj.simplevchat.events {
 	import flash.events.Event;
 	
 	import turbosqel.events.DynamicEvent;

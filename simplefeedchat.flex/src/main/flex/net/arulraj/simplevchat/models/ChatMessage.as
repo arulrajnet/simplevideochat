@@ -8,9 +8,9 @@
  * History	:
  */
 
-package net.arulraj.feedchat.models
+package net.arulraj.simplevchat.models
 {
-	import net.arulraj.feedchat.utils.AppConstants;
+	import net.arulraj.simplevchat.utils.AppConstants;
 	
 	import mx.utils.StringUtil;
 	

@@ -8,9 +8,9 @@
  * History	:
  */
 
-package net.arulraj.feedchat.connection
+package net.arulraj.simplevchat.connection
 {
-	import net.arulraj.feedchat.models.ConnectionType;
+	import net.arulraj.simplevchat.models.ConnectionType;
 	
 	import flash.events.AsyncErrorEvent;
 	import flash.events.NetStatusEvent;

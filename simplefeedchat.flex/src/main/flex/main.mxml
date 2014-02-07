@@ -5,9 +5,9 @@
 			   preinitialize="initVars(event)"
 			   initialize="initFunctions(event)"
 			   creationComplete="creationComplete(event)"
-			   xmlns:view="net.arulraj.feedchat.view.*" xmlns:event="net.arulraj.feedchat.events.*" 
-			   xmlns:net="net.arulraj.feedchat.connection.*" xmlns:utils="net.arulraj.feedchat.utils.*" 
-			   xmlns:components="net.arulraj.feedchat.components.*" xmlns:skin="net.arulraj.feedchat.skin.*"
+			   xmlns:view="net.arulraj.feedchat.view.*" xmlns:events="net.arulraj.simplevchat.events.*" 
+			   xmlns:connection="net.arulraj.simplevchat.connection.*" xmlns:utils="net.arulraj.simplevchat.utils.*" 
+			   xmlns:components="net.arulraj.simplevchat.components.*" xmlns:skin="net.arulraj.simplevchat.skin.*"
 			   width="100%" height="100%"
 			   minWidth="800" minHeight="600">
 	<fx:Declarations>
@@ -25,15 +25,15 @@
 			import mx.rpc.AsyncResponder;
 			import mx.utils.URLUtil;
 			
-			import net.arulraj.feedchat.components.ConnectBox;
-			import net.arulraj.feedchat.components.InfoPopup;
-			import net.arulraj.feedchat.connection.VideoConnection;
-			import net.arulraj.feedchat.events.AppEvent;
-			import net.arulraj.feedchat.events.ConnectionEvent;
-			import net.arulraj.feedchat.events.StreamEvent;
-			import net.arulraj.feedchat.models.ConnectionType;
-			import net.arulraj.feedchat.utils.AppConstants;
-			import net.arulraj.feedchat.utils.LogTrace;
+			import net.arulraj.simplevchat.components.ConnectBox;
+			import net.arulraj.simplevchat.components.InfoPopup;
+			import net.arulraj.simplevchat.connection.VideoConnection;
+			import net.arulraj.simplevchat.events.AppEvent;
+			import net.arulraj.simplevchat.events.ConnectionEvent;
+			import net.arulraj.simplevchat.events.StreamEvent;
+			import net.arulraj.simplevchat.models.ConnectionType;
+			import net.arulraj.simplevchat.utils.AppConstants;
+			import net.arulraj.simplevchat.utils.LogTrace;
 			
 			import turbosqel.data.resources.Resource;
 			import turbosqel.data.resources.ResourceManage;
@@ -196,9 +196,9 @@
 			private function initUIDesign(event:DownloadManagerEvent):void {
 				LOG.debug("### initUIDesign : Start");
 				var globalsXml:XML = new XML(configResource.loaderInfo.source);
-				AppConstants.RED5_SERVER = globalsXml.static[0].elements("net.arulraj.feedchat.utils.AppConstants.RED5_SERVER").@["value"];
-				AppConstants.PHP_SERVER = globalsXml.static[0].elements("net.arulraj.feedchat.utils.AppConstants.PHP_SERVER").@["value"];
-				AppConstants.MAIN_APP = globalsXml.static[0].elements("net.arulraj.feedchat.utils.AppConstants.MAIN_APP").@["value"];
+				AppConstants.RED5_SERVER = globalsXml.static[0].elements("net.arulraj.simplevchat.utils.AppConstants.RED5_SERVER").@["value"];
+				AppConstants.PHP_SERVER = globalsXml.static[0].elements("net.arulraj.simplevchat.utils.AppConstants.PHP_SERVER").@["value"];
+				AppConstants.MAIN_APP = globalsXml.static[0].elements("net.arulraj.simplevchat.utils.AppConstants.MAIN_APP").@["value"];
 				setTimeout(GlobalDispatcher.dispatchEvent,1000,new AppEvent(AppEvent.CONNECT_SCREEN));
 				LOG.debug("### initUIDesign : End");
 			}

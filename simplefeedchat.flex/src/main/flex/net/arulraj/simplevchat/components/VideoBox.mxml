@@ -13,7 +13,7 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		  xmlns:s="library://ns.adobe.com/flex/spark" 
 		  xmlns:mx="library://ns.adobe.com/flex/mx"
-		  xmlns:components="net.arulraj.feedchat.components.*"
+		  xmlns:components="net.arulraj.simplevchat.components.*"
 		  creationComplete="onCreationComplete()" >
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
@@ -43,8 +43,8 @@
 			import mx.logging.Log;
 			import mx.utils.StringUtil;
 			
-			import net.arulraj.feedchat.events.AppEvent;
-			import net.arulraj.feedchat.utils.AppConstants;
+			import net.arulraj.simplevchat.events.AppEvent;
+			import net.arulraj.simplevchat.utils.AppConstants;
 			
 			import spark.components.Application;
 			
@@ -66,7 +66,7 @@
 			
 			private var d:Date;			
 			
-			private static var LOG:ILogger = Log.getLogger('net.arulraj.feedchat.components.VideoBox');
+			private static var LOG:ILogger = Log.getLogger('net.arulraj.simplevchat.components.VideoBox');
 			
 			private function onCreationComplete():void {
 				this.currentState = "nopartner";
@@ -173,7 +173,7 @@
 		<s:Group id="partnerVideoBox" x="0" y="0" width="{this.width}" height="{this.height}">
 			<s:SkinnableContainer id="partnerVideoSkin" visible="true"
 								  height="{partnerVideoBox.height}" width="{partnerVideoBox.width}"
-								  skinClass="net.arulraj.feedchat.skin.VideoDisplaySkin">
+								  skinClass="net.arulraj.simplevchat.skin.VideoDisplaySkin">
 			</s:SkinnableContainer>
 			<s:VideoDisplay id="partnerVideoDisplay" name="partnerVideoDisplay"
 							autoDisplayFirstFrame="false"

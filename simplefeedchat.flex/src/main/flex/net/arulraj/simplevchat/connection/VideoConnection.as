@@ -8,7 +8,7 @@
  * History  :
  */
 
-package net.arulraj.feedchat.connection
+package net.arulraj.simplevchat.connection
 {
 	import flash.display.DisplayObject;
 	import flash.events.ActivityEvent;
@@ -36,12 +36,12 @@ package net.arulraj.feedchat.connection
 	import mx.managers.PopUpManager;
 	import mx.utils.ObjectProxy;
 	
-	import net.arulraj.feedchat.components.InfoPopup;
-	import net.arulraj.feedchat.components.SettingsBox;
-	import net.arulraj.feedchat.events.AppEvent;
-	import net.arulraj.feedchat.events.ConnectionEvent;
-	import net.arulraj.feedchat.events.StreamEvent;
-	import net.arulraj.feedchat.utils.AppConstants;
+	import net.arulraj.simplevchat.components.InfoPopup;
+	import net.arulraj.simplevchat.components.SettingsBox;
+	import net.arulraj.simplevchat.events.AppEvent;
+	import net.arulraj.simplevchat.events.ConnectionEvent;
+	import net.arulraj.simplevchat.events.StreamEvent;
+	import net.arulraj.simplevchat.utils.AppConstants;
 	
 	import spark.components.Application;
 	import spark.components.VideoDisplay;
@@ -50,7 +50,7 @@ package net.arulraj.feedchat.connection
 
 	public class VideoConnection extends RTMPConnectionImpl
 	{
-		private static var LOG:ILogger = Log.getLogger('net.arulraj.feedchat.connection.VideoConnection');
+		private static var LOG:ILogger = Log.getLogger('net.arulraj.simplevchat.connection.VideoConnection');
 		
 		private var videoStream:NetStream = null;
 		private var audioStream:NetStream = null;

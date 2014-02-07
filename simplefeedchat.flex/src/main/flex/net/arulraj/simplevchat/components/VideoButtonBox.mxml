@@ -10,7 +10,7 @@
 		<![CDATA[
 			import mx.events.FlexEvent;
 			
-			import net.arulraj.feedchat.events.AppEvent;
+			import net.arulraj.simplevchat.events.AppEvent;
 			
 			import turbosqel.events.GlobalDispatcher;
 			

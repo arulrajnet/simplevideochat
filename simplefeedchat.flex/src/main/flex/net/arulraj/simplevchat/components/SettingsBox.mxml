@@ -22,14 +22,14 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import net.arulraj.feedchat.models.Settings;
-			import net.arulraj.feedchat.utils.AppConstants;
+			import net.arulraj.simplevchat.models.Settings;
+			import net.arulraj.simplevchat.utils.AppConstants;
 			
 			import mx.core.FlexGlobals;
 			import mx.logging.ILogger;
 			import mx.logging.Log;
 			
-			private static var LOG:ILogger = Log.getLogger('net.arulraj.feedchat.components.SettingsBox');
+			private static var LOG:ILogger = Log.getLogger('net.arulraj.simplevchat.components.SettingsBox');
 			
 			[Bindable]
 			private var application:Object = FlexGlobals.topLevelApplication;

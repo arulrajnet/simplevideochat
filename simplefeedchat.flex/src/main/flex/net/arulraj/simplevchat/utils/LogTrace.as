@@ -1,4 +1,4 @@
-package net.arulraj.feedchat.utils
+package net.arulraj.simplevchat.utils
 {
 	import mx.logging.Log;
 	import mx.logging.LogEventLevel;

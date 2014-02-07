@@ -13,7 +13,7 @@
 <s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   xmlns:s="library://ns.adobe.com/flex/spark"
-			   title="Message" name="infoPopup" skinClass="net.arulraj.feedchat.skin.PopupSkin"
+			   title="Message" name="infoPopup" skinClass="net.arulraj.simplevchat.skin.PopupSkin"
 			   minWidth="300" minHeight="{_exitEnabled ? 100 : 100}" cornerRadius="7" dropShadowVisible="false"
 			   close="{_exitEnabled ? close() : null}"> 
 	<fx:Script>

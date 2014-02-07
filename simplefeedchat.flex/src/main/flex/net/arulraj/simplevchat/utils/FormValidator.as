@@ -1,4 +1,4 @@
-package net.arulraj.feedchat.utils
+package net.arulraj.simplevchat.utils
 {
 	import flash.display.DisplayObject;
 	import flash.events.Event;

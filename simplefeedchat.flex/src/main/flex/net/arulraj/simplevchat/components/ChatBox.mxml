@@ -2,7 +2,7 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
-		 xmlns:components="net.arulraj.feedchat.components.*"
+		 xmlns:components="net.arulraj.simplevchat.components.*"
 		 creationComplete="onCreationComplete(event)">
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
@@ -10,9 +10,9 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import net.arulraj.feedchat.events.ChatEvent;
-			import net.arulraj.feedchat.models.ChatMessage;
-			import net.arulraj.feedchat.utils.AppUtility;
+			import net.arulraj.simplevchat.events.ChatEvent;
+			import net.arulraj.simplevchat.models.ChatMessage;
+			import net.arulraj.simplevchat.utils.AppUtility;
 			
 			import flashx.textLayout.conversion.TextConverter;
 			
@@ -22,7 +22,7 @@
 			import mx.logging.Log;
 			import mx.utils.StringUtil;
 			
-			private static var LOG:ILogger = Log.getLogger('net.arulraj.feedchat.components.ChatBox');
+			private static var LOG:ILogger = Log.getLogger('net.arulraj.simplevchat.components.ChatBox');
 			
 			/*This is for add Help message to the users*/
 			private function showHelpMessage():void {

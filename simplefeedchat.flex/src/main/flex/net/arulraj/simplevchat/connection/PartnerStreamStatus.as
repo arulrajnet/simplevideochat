@@ -1,4 +1,4 @@
-package net.arulraj.feedchat.connection
+package net.arulraj.simplevchat.connection
 {
 	import flash.events.NetStatusEvent;
 	
@@ -6,14 +6,14 @@ package net.arulraj.feedchat.connection
 	import mx.logging.ILogger;
 	import mx.logging.Log;
 	
-	import net.arulraj.feedchat.events.AppEvent;
-	import net.arulraj.feedchat.events.StreamEvent;
+	import net.arulraj.simplevchat.events.AppEvent;
+	import net.arulraj.simplevchat.events.StreamEvent;
 	
 	import turbosqel.events.GlobalDispatcher;
 
 	public class PartnerStreamStatus
 	{
-		private static var LOG:ILogger = Log.getLogger('net.arulraj.feedchat.connection.PartnerStreamStatus');
+		private static var LOG:ILogger = Log.getLogger('net.arulraj.simplevchat.connection.PartnerStreamStatus');
 		
 		private var connection:RTMPConnectionImpl;		
 		

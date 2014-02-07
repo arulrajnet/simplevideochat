@@ -24,7 +24,7 @@
 	</s:layout>
 	
 	<s:List id="feedList"
-			itemRenderer="net.arulraj.feedchat.skin.FeedListItemRenderer"
+			itemRenderer="net.arulraj.simplevchat.skin.FeedListItemRenderer"
 			width="{feedList.height}"
 			horizontalCenter="0" verticalCenter="0"
 			useVirtualLayout="false"

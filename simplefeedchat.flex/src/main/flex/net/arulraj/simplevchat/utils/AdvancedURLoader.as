@@ -1,4 +1,4 @@
-package utils
+package net.arulraj.simplevchat.utils
 {
 	import turbosqel.net.bytes.URLoader;
 	
