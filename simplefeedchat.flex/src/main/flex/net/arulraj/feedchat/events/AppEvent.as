@@ -22,6 +22,10 @@ package net.arulraj.feedchat.events {
 		
 		public static const PARTNER_WENT:String = "partnerWent";
 		
+		public static const PARTNER_SPEAKER_MUTED:String = "partnerMuted";
+
+		public static const PARTNER_SPEAKER_UNMUTED:String = "partnerUnmuted";
+
 		public static const SHOW_MALE_LOGIN:String = "maleLogin";
 		public static const SHOW_FEMALE_LOGIN:String = "femaleLogin";
 		

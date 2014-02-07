@@ -167,34 +167,26 @@
 			}
 		]]>
 	</fx:Script>
-	<!--<s:Group id="noPartnerBox" width="{this.width}" height="{this.height}" includeIn="nopartner">
-		
-		<s:Label text="Partner not avilable." width="{this.width}" height="{this.height}"
-				 fontSize="18"
-				 textAlign="center" verticalAlign="middle"/>
-		<s:Rect width="{noPartnerBox.width}" height="{noPartnerBox.height}">
-			<s:stroke>
-				<s:SolidColorStroke color="0x000000" weight="1" />
-			</s:stroke>		
-			<s:fill>
-				<s:BitmapFill source="@Embed(source='/assets/bgpix.png')" alpha="0.5" />
-			</s:fill>
-		</s:Rect>		
-	</s:Group>-->
 	
-	<s:Group id="partnerVideoBox" x="0" y="0" width="{this.width}" height="{this.height}">
-		<s:SkinnableContainer id="partnerVideoSkin" visible="true"
-							  height="{partnerVideoBox.height}" width="{partnerVideoBox.width}"
-							  skinClass="net.arulraj.feedchat.skin.VideoDisplaySkin">
-		</s:SkinnableContainer>		
-		<s:VideoDisplay id="partnerVideoDisplay" name="partnerVideoDisplay"
-						autoDisplayFirstFrame="false"
-						width="{partnerVideoBox.width}" height="{partnerVideoBox.height}" />
-		<s:Label text="Partner not avilable." width="{this.width}" height="{this.height}"
-				 fontSize="18" textAlign="center" verticalAlign="middle"
-				 includeIn="nopartner" />
-	</s:Group>
 	<s:VGroup gap="10">
+		<s:Label text="Partner Video" fontSize="18" fontWeight="bold" />
+		<s:Group id="partnerVideoBox" x="0" y="0" width="{this.width}" height="{this.height}">
+			<s:SkinnableContainer id="partnerVideoSkin" visible="true"
+								  height="{partnerVideoBox.height}" width="{partnerVideoBox.width}"
+								  skinClass="net.arulraj.feedchat.skin.VideoDisplaySkin">
+			</s:SkinnableContainer>
+			<s:VideoDisplay id="partnerVideoDisplay" name="partnerVideoDisplay"
+							autoDisplayFirstFrame="false"
+							width="{partnerVideoBox.width}" height="{partnerVideoBox.height}" />
+			<s:Label text="Partner not avilable." width="{this.width}" height="{this.height}"
+					 fontSize="18" textAlign="center" verticalAlign="middle"
+					 includeIn="nopartner" />
+		</s:Group>
+		<components:VideoButtonBox id="partnerVideoButtonBox" isPartner="true" toolTip="Partner Audio" width="{liveVideoBox.width}" />
+	</s:VGroup>
+
+	<s:VGroup gap="10">
+		<s:Label text="Your Video" fontSize="18" fontWeight="bold" />
 		<s:Group id="liveVideoBox" width="240" height="120" >
 			<s:VideoDisplay id="liveVideoDisplay" name="liveVideoDisplay"
 							width="{liveVideoBox.width}" height="{liveVideoBox.height}" />
@@ -213,6 +205,6 @@
 				</s:Group>			
 			</s:Group>		
 		</s:Group>
-		<components:VideoButtonBox id="videoButtonBox" width="{liveVideoBox.width}" />
+		<components:VideoButtonBox id="videoButtonBox" isPartner="false" toolTip="Your Audio" width="{liveVideoBox.width}" />
 	</s:VGroup>
 </s:Group>

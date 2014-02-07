@@ -14,13 +14,23 @@
 			
 			import turbosqel.events.GlobalDispatcher;
 			
+			private var _isPartner:Boolean = false;
+
 			protected function onToggleMuteClick(event:MouseEvent,unmute:Boolean):void
 			{
 				if(unmute) {
-					GlobalDispatcher.dispatchEvent(new AppEvent(AppEvent.MICROPHONE_UNMUTED));
+					if(_isPartner) {
+						GlobalDispatcher.dispatchEvent(new AppEvent(AppEvent.PARTNER_SPEAKER_UNMUTED));
+					} else {
+						GlobalDispatcher.dispatchEvent(new AppEvent(AppEvent.MICROPHONE_UNMUTED));
+					}
 					this.currentState = "unmuted";
 				} else {
-					GlobalDispatcher.dispatchEvent(new AppEvent(AppEvent.MICROPHONE_MUTED));
+					if(_isPartner) {
+						GlobalDispatcher.dispatchEvent(new AppEvent(AppEvent.PARTNER_SPEAKER_MUTED));
+					} else {
+						GlobalDispatcher.dispatchEvent(new AppEvent(AppEvent.MICROPHONE_MUTED));
+					}
 					this.currentState = "muted";
 				}
 			}			
@@ -30,6 +40,10 @@
 				this.currentState = "unmuted";				
 			}
 			
+			public function set isPartner(value:Boolean):void {
+				this._isPartner = value;
+			}
+
 		]]>
 	</fx:Script>
 	<s:layout>
@@ -42,9 +56,9 @@
 	</s:states>
 	
 	<s:Button icon="@Embed('/assets/unmute.png')" width="40" height="40" excludeFrom="muted"
-			  id="unmuteButton" toolTip="Mute Audio" click="onToggleMuteClick(event,false)" />
+			  id="unmuteButton" toolTip="{_isPartner ? 'Mute partner audio' : 'Mute your audio'}" click="onToggleMuteClick(event,false)" />
 	<s:Button icon="@Embed('/assets/mute.png')" width="40" height="40" includeIn="muted"
-			  id="muteButton" toolTip="Un mute Audio" click="onToggleMuteClick(event,true)" />
+			  id="muteButton" toolTip="{_isPartner ? 'Un Mute partner audio' : 'Un Mute your audio'}" click="onToggleMuteClick(event,true)" />
 	<mx:ProgressBar id="micProgress" name="micProgress"
 					styleName="micLevelProgressBar"
 					minimum="0" maximum="100" width="80%"

@@ -21,6 +21,7 @@ package net.arulraj.feedchat.connection
 	import flash.media.Camera;
 	import flash.media.Microphone;
 	import flash.media.SoundCodec;
+	import flash.media.SoundTransform;
 	import flash.media.Video;
 	import flash.net.NetStream;
 	import flash.net.SharedObject;
@@ -208,6 +209,17 @@ package net.arulraj.feedchat.connection
 					if(micProgress != null) {
 						FlexGlobals.topLevelApplication.videoBox.videoButtonBox.micProgress.setProgress(ac,100);
 					}
+
+					/**
+					 * speaker bar at the bottom of partner video
+					 */
+					var speakerProgress:DisplayObject = FlexGlobals.topLevelApplication.videoBox.partnerVideoButtonBox.micProgress;
+					if(speakerProgress != null) {
+						if(partnerVStream != null) {
+							var value:int = partnerVStream.soundTransform.volume * 100;
+							FlexGlobals.topLevelApplication.videoBox.partnerVideoButtonBox.micProgress.setProgress(value,100);
+						}
+					}
 				}
 			}
 		}
@@ -356,6 +368,9 @@ package net.arulraj.feedchat.connection
 			} else {
 				partnerVStream.play(streamName+"_v", -1, -1, true);
 			}
+			var st:SoundTransform = partnerVStream.soundTransform;
+			st.volume = 1;
+			partnerVStream.soundTransform = st;
 			partnerVideo = new Video(partnerVDisplay.width, partnerVDisplay.height);
 			partnerVideo.attachNetStream(partnerVStream);
 			partnerVideo.smoothing = true;
@@ -571,7 +586,7 @@ package net.arulraj.feedchat.connection
 		}
 		
 		/**
-		 * Function for mute and unmute the audio 
+		 * Function for mute and unmute the microphone audio
 		 */
 		public function toggleMute(event:AppEvent):void {
 			if(event.type == AppEvent.MICROPHONE_UNMUTED) {
@@ -586,6 +601,28 @@ package net.arulraj.feedchat.connection
 				} else {
 					audioStream.attachAudio(null);
 				}				
+			}
+		}
+
+		/**
+		 * Function for mute and unmute the partner speaker
+		 */
+		public function togglePartnerMute(event:AppEvent):void {
+			var st:SoundTransform = partnerVStream.soundTransform;
+			if(event.type == AppEvent.PARTNER_SPEAKER_UNMUTED) {
+				st.volume = 1;
+				if(AppConstants.IS_SINGLE_SREAM) {
+					partnerVStream.soundTransform = st;
+				} else {
+					partnerAStream.soundTransform = st;
+				}
+			} else {
+				st.volume = 0;
+				if(AppConstants.IS_SINGLE_SREAM) {
+					partnerVStream.soundTransform = st;
+				} else {
+					partnerAStream.soundTransform = st;
+				}
 			}
 		}
 

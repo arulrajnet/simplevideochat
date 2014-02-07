@@ -141,6 +141,9 @@
 				GlobalDispatcher.addEventListener(AppEvent.PARTNER_ARRIVED, onPartnerArrived);
 				GlobalDispatcher.addEventListener(AppEvent.PARTNER_WENT, onPartnerWent);
 				
+				GlobalDispatcher.addEventListener(AppEvent.PARTNER_SPEAKER_UNMUTED, videoConn.togglePartnerMute);
+				GlobalDispatcher.addEventListener(AppEvent.PARTNER_SPEAKER_MUTED, videoConn.togglePartnerMute);
+
 				commonTimer.addEventListener(TimerEvent.TIMER, videoConn.updateMicMeter);
 				
 				LOG.debug("### initListeners : End");
