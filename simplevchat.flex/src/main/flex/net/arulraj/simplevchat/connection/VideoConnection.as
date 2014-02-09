@@ -21,10 +21,12 @@ package net.arulraj.simplevchat.connection
 	import flash.media.Camera;
 	import flash.media.Microphone;
 	import flash.media.SoundCodec;
+	import flash.media.SoundMixer;
 	import flash.media.SoundTransform;
 	import flash.media.Video;
 	import flash.net.NetStream;
 	import flash.net.SharedObject;
+	import flash.utils.ByteArray;
 	import flash.utils.Timer;
 	
 	import mx.collections.ArrayCollection;
@@ -215,8 +217,14 @@ package net.arulraj.simplevchat.connection
 					 */
 					var speakerProgress:DisplayObject = FlexGlobals.topLevelApplication.videoBox.partnerVideoButtonBox.micProgress;
 					if(speakerProgress != null) {
-						if(partnerVStream != null) {
-							var value:int = partnerVStream.soundTransform.volume * 100;
+						if(partnerVStream != null && partnerVStream.soundTransform != null) {
+							/**
+							 * TODO: Need to improve this logic
+							 */
+							var ba:ByteArray = new ByteArray();
+							SoundMixer.computeSpectrum(ba,true,0);
+							var value:int = ba.readFloat() * 60;
+
 							FlexGlobals.topLevelApplication.videoBox.partnerVideoButtonBox.micProgress.setProgress(value,100);
 						}
 					}
@@ -361,7 +369,8 @@ package net.arulraj.simplevchat.connection
 				partnerVStream = new NetStream(this);
 				partnerVStream.addEventListener(NetStatusEvent.NET_STATUS, partnerStreamStatus.netStreamStatus);
 				partnerVStream.addEventListener("status", partnerStreamStatus.streamStatus);
-				partnerVStream.addEventListener("error", partnerStreamStatus.streamError);        
+				partnerVStream.addEventListener("error", partnerStreamStatus.streamError);
+				partnerVStream.bufferTime = 1;
 			}
 			if(AppConstants.IS_SINGLE_SREAM) {
 				partnerVStream.play(streamName+"_av", -1, -1, true);
@@ -369,7 +378,7 @@ package net.arulraj.simplevchat.connection
 				partnerVStream.play(streamName+"_v", -1, -1, true);
 			}
 			var st:SoundTransform = partnerVStream.soundTransform;
-			st.volume = 1;
+			st.volume = AppConstants.AUDIO_VOLUME_FULL;
 			partnerVStream.soundTransform = st;
 			partnerVideo = new Video(partnerVDisplay.width, partnerVDisplay.height);
 			partnerVideo.attachNetStream(partnerVStream);
@@ -475,7 +484,7 @@ package net.arulraj.simplevchat.connection
 				//microphone.encodeQuality = AppConstants.MED_AUDIO_QUALITY;
 				microphone.rate = AppConstants.MED_AUDIO_RATE;
 				microphone.framesPerPacket = AppConstants.AUDIO_PACKET;
-				//microphone.gain = FlexGlobals.topLevelApplication.avSettings.micVolume;
+				microphone.gain = AppConstants.AUDIO_GAIN;
 				microphone.setUseEchoSuppression(true); 
 				microphone.setLoopBack(false); 
 				microphone.setSilenceLevel(2, AppConstants.AUDIO_SILENCE_LEVEL); 
@@ -610,14 +619,14 @@ package net.arulraj.simplevchat.connection
 		public function togglePartnerMute(event:AppEvent):void {
 			var st:SoundTransform = partnerVStream.soundTransform;
 			if(event.type == AppEvent.PARTNER_SPEAKER_UNMUTED) {
-				st.volume = 1;
+				st.volume = AppConstants.AUDIO_VOLUME_FULL;
 				if(AppConstants.IS_SINGLE_SREAM) {
 					partnerVStream.soundTransform = st;
 				} else {
 					partnerAStream.soundTransform = st;
 				}
 			} else {
-				st.volume = 0;
+				st.volume = AppConstants.AUDIO_VOLUME_MUTE;
 				if(AppConstants.IS_SINGLE_SREAM) {
 					partnerVStream.soundTransform = st;
 				} else {

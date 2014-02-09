@@ -6,7 +6,13 @@
     http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-3.0.xsd">
 	
 	<bean id="placeholderConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-	    <property name="location" value="/WEB-INF/simplevchat.properties" />
+	    <property name="location" value="classpath:simplevchat.properties" />
+	</bean>
+
+	<!-- For SoundMixer.computeSpectrum -->
+	<bean id="rtmpSampleAccess" class="org.red5.server.stream.RtmpSampleAccess">
+		<property name="audioAllowed" value="true"/>
+		<property name="videoAllowed" value="true"/>
 	</bean>
 	
 	<bean id="web.context" class="org.red5.server.Context" autowire="byType" />

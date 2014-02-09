@@ -54,7 +54,9 @@ package net.arulraj.simplevchat.utils
 		public static const MED_AUDIO_RATE:int = 22;
 		public static const LOW_AUDIO_RATE:int = 11;
 		public static const AUDIO_PACKET:int = 2;
-		public static const AUDIO_GAIN:int = 50;
+		public static const AUDIO_GAIN:int = 75;
+		public static const AUDIO_VOLUME_FULL:int = 1;
+		public static const AUDIO_VOLUME_MUTE:int = 0;
 		public static const AUDIO_SILENCE_LEVEL:int = 5000;
 		public static const DEFAULT_SPEAKER_VOLUME:int = 75;
 		public static const RESOLUTION_ARRAY:Array = new Array("320x240","640x480","960x720");
