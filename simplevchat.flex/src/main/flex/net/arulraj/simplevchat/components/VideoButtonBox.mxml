@@ -42,6 +42,7 @@
 			
 			public function set isPartner(value:Boolean):void {
 				this._isPartner = value;
+				micProgress.visible = this._isPartner;
 			}
 
 		]]>
@@ -60,8 +61,9 @@
 	<s:Button icon="@Embed('/assets/mute.png')" width="40" height="40" includeIn="muted"
 			  id="muteButton" toolTip="{_isPartner ? 'Un Mute partner audio' : 'Un Mute your audio'}" click="onToggleMuteClick(event,true)" />
 	<mx:ProgressBar id="micProgress" name="micProgress"
+					visible="{_isPartner}"
 					styleName="micLevelProgressBar"
 					minimum="0" maximum="100" width="80%"
 					label="volume" labelPlacement="center"
-					mode="manual" visible="true"/>
+					mode="manual"/>
 </s:Group>

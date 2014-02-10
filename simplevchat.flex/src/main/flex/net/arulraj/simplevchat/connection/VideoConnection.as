@@ -207,7 +207,7 @@ package net.arulraj.simplevchat.connection
 					/**
 					 * volume bar at the bottom of video
 					 */
-					var micProgress:DisplayObject = FlexGlobals.topLevelApplication.videoBox.videoButtonBox.micProgress;
+					var micProgress:DisplayObject = FlexGlobals.topLevelApplication.videoBox.videoButtonBox.getChildByName("micProgress");
 					if(micProgress != null) {
 						FlexGlobals.topLevelApplication.videoBox.videoButtonBox.micProgress.setProgress(ac,100);
 					}
@@ -215,7 +215,7 @@ package net.arulraj.simplevchat.connection
 					/**
 					 * speaker bar at the bottom of partner video
 					 */
-					var speakerProgress:DisplayObject = FlexGlobals.topLevelApplication.videoBox.partnerVideoButtonBox.micProgress;
+					var speakerProgress:DisplayObject = FlexGlobals.topLevelApplication.videoBox.partnerVideoButtonBox.getChildByName("micProgress");
 					if(speakerProgress != null) {
 						if(partnerVStream != null && partnerVStream.soundTransform != null) {
 							/**
