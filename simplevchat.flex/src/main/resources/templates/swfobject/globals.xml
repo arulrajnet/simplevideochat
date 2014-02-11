@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<data>
-	<static>
-		<net.arulraj.simplevchat.utils.AppConstants.RED5_SERVER type="String" value= "50.28.15.118"/>
-		<net.arulraj.simplevchat.utils.AppConstants.PHP_SERVER type="String" value= "http://beourbuddy.com/ohmibod/"/>
-		<net.arulraj.simplevchat.utils.AppConstants.MAIN_APP type="String" value= "simplevchat"/>
-	</static>
-</data>
+<s:ASML	xmlns:s="script" 
+		xmlns:c="constructor" 
+		xmlns:set="setter" 
+		xmlns:get="getter" 
+		xmlns:v="var" 
+		xmlns:f="call" 
+		xmlns:m="math"
+		xmlns:l="local">
+
+	<set:MAIN_APP static="net.arulraj.simplevchat.utils.AppConstants">
+		<v:String>simplevchat</v:String>
+	</set:MAIN_APP>
+	
+	<set:RED5_SERVER static="net.arulraj.simplevchat.utils.AppConstants">
+		<v:String>localhost</v:String>
+	</set:RED5_SERVER>
+
+	<set:PHP_SERVER static="net.arulraj.simplevchat.utils.AppConstants">
+		<v:String>http://localhost/simplechat</v:String>
+	</set:PHP_SERVER>
+
+</s:ASML>

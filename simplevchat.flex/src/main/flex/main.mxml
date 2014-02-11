@@ -35,6 +35,7 @@
 			import net.arulraj.simplevchat.utils.AppConstants;
 			import net.arulraj.simplevchat.utils.LogTrace;
 			
+			import turbosqel.asml.ASMLManager;
 			import turbosqel.data.resources.Resource;
 			import turbosqel.data.resources.ResourceManage;
 			import turbosqel.events.GlobalDispatcher;
@@ -196,9 +197,7 @@
 			private function initUIDesign(event:DownloadManagerEvent):void {
 				LOG.debug("### initUIDesign : Start");
 				var globalsXml:XML = new XML(configResource.loaderInfo.source);
-				AppConstants.RED5_SERVER = globalsXml.static[0].elements("net.arulraj.simplevchat.utils.AppConstants.RED5_SERVER").@["value"];
-				AppConstants.PHP_SERVER = globalsXml.static[0].elements("net.arulraj.simplevchat.utils.AppConstants.PHP_SERVER").@["value"];
-				AppConstants.MAIN_APP = globalsXml.static[0].elements("net.arulraj.simplevchat.utils.AppConstants.MAIN_APP").@["value"];
+				var xmlResult:Array = ASMLManager.parseXML(globalsXml,this);
 				setTimeout(GlobalDispatcher.dispatchEvent,1000,new AppEvent(AppEvent.CONNECT_SCREEN));
 				LOG.debug("### initUIDesign : End");
 			}
